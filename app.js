@@ -1,5 +1,13 @@
 var express = require('express');
 var exphbs  = require('express-handlebars');
+var mysql  = require('mysql');
+var parser  = require('body-parser');
+
+
+var formidable = require('formidable'),
+    http = require('http'),
+    util = require('util'),
+    fs   = require('fs-extra');
 
  
 var app = express();
@@ -23,61 +31,40 @@ app.get('/crearCuento', function (req, res) {
 });
 
 
+app.post('/subir', (req, res) => {
+  req.fields; // contains non-file fields 
+  req.files; // contains files 
 
-
-
-
-
-function encaminar (pedido,respuesta,camino) {
-	
-	switch (camino) {
-		case 'public/subir': {
-			subir(pedido,respuesta);
-			break;
-		}	
-	    default : {  
-			fs.exists(camino,function(existe){
-				if (existe) {
-					fs.readFile(camino,function(error,contenido){
-						if (error) {
-							respuesta.writeHead(500, {'Content-Type': 'text/plain'});
-							respuesta.write('Error interno');
-							respuesta.end();					
-						} else {
-							var vec = camino.split('.');
-							var extension=vec[vec.length-1];
-							var mimearchivo=mime[extension];
-							respuesta.writeHead(200, {'Content-Type': mimearchivo});
-							respuesta.write(contenido);
-							respuesta.end();
-						}
-					});
-				} else {
-					respuesta.writeHead(404, {'Content-Type': 'text/html'});
-					respuesta.write('<!doctype html><html><head></head><body>Recurso inexistente</body></html>');		
-					respuesta.end();
-				}
-			});	
-		}
-	}	
-}
-
-
-function subir(pedido,respuesta){
-
-	var entrada=new formidable.IncomingForm();
-	entrada.uploadDir='upload';
-	entrada.parse(pedido);
-    entrada.on('fileBegin', function(field, file){
-        file.path = "./public/upload/"+file.name;
-    });	
-    entrada.on('end', function(){
-		respuesta.writeHead(200, {'Content-Type': 'text/html'});
-		respuesta.write('<!doctype html><html><head></head><body>'+
-		                'Archivo subido<br><a href="index.html">Retornar</a></body></html>');		
-		respuesta.end();
-    });	
-}
+    
+    var form = new formidable.IncomingForm();
+ 
+ // parse a file upload
+    form.parse(req, function(err, fields, files) {
+      res.writeHead(200, {'content-type': 'text/plain'});
+      res.write('Upload received :\n');
+//        var file_name = this.openedFiles[0].name;
+        
+      res.end(util.inspect({fields: fields, files: files}));
+    });
+    form.on('end', function(fields, files) {
+        /* Temporary location of our uploaded file */
+        var temp_path = this.openedFiles[0].path;
+        /* The file name of the uploaded file */
+        var file_name = this.openedFiles[0].name;
+        console.log(file_name);
+        /* Location where we want to copy the uploaded file */
+        var new_location = 'public/imagenes/';
+        fs.copy(temp_path, new_location + file_name, function(err) {  
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("success!")
+            }
+        });
+    });
+    
+    
+});
 
 
 

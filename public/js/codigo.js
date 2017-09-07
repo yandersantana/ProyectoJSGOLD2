@@ -298,7 +298,7 @@ $(document).ready(function () {
         var message = "";
         //hacemos la petición ajax  
         $.ajax({
-            url: '../php/upload.php',
+            url: '/subir',
             type: 'POST',
             // Form data
             //datos del formulario
