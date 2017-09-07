@@ -313,7 +313,9 @@ $(document).ready(function () {
                 showMessage(message)
             },
             //una vez finalizado correctamente
+            
             success: function (data) {
+                
                 message = $("<span class='success'>La imagen ha subido correctamente.</span>");
                 showMessage(message);
                 
@@ -369,7 +371,7 @@ $(document).ready(function () {
         var message = "";
         //hacemos la petición ajax  
         $.ajax({
-            url: '../php/upload.php',
+            url: '/subir',
             type: 'POST',
             // Form data
             //datos del formulario

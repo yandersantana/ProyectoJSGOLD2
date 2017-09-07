@@ -41,10 +41,10 @@ app.post('/subir', (req, res) => {
  // parse a file upload
     form.parse(req, function(err, fields, files) {
       res.writeHead(200, {'content-type': 'text/plain'});
-      res.write('Upload received :\n');
-//        var file_name = this.openedFiles[0].name;
+    
+      //res.end(util.inspect({fields: fields, files: files}));
         
-      res.end(util.inspect({fields: fields, files: files}));
+      
     });
     form.on('end', function(fields, files) {
         /* Temporary location of our uploaded file */
@@ -53,7 +53,7 @@ app.post('/subir', (req, res) => {
         var file_name = this.openedFiles[0].name;
         console.log(file_name);
         /* Location where we want to copy the uploaded file */
-        var new_location = 'public/imagenes/';
+        var new_location = 'public/imagenes/historias/';
         fs.copy(temp_path, new_location + file_name, function(err) {  
             if (err) {
                 console.error(err);
@@ -61,9 +61,9 @@ app.post('/subir', (req, res) => {
                 console.log("success!")
             }
         });
+        res.end(file_name);
     });
-    
-    
+      
 });
 
 
