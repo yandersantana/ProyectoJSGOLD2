@@ -1,7 +1,8 @@
-var a = 0;
+
 var v;
 var controladorImagenes = 0;
 function leerCuento() {
+    var a = 0;
 var datos="";
 $.ajax({
 url: '/cargar',
@@ -59,9 +60,8 @@ alert("Visitanos En twitter"+img);
 alert("Pinterest Amigos"+img);
 
 
-  $("#principal").append('<li><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + img + '>'+  elem.title + '</div></a></li>');
-
-    
+  $("#principal").append('<li><a id=' + a.toString() + '><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + img + '>'+  elem.title + '</div></a></li>');
+  a++;
     
 });
            }
