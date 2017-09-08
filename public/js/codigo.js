@@ -125,8 +125,7 @@ function crearCuento() {
   
     var cuent = new Cuento(title,des,cre,cuentosIm,cuentosAu);
     console.log("aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"+cuent.nombre);
-    return cuent;
-    
+    return cuent;    
 }
 
 
