@@ -67,92 +67,37 @@ app.post('/subir', (req, res) => {
 });
 
 
-
-//Database connection
-/*var con = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'estudiante', //...........>>>>> importante cambiar la clave <<<<<< .........
-  database : 'GoldTales'
-});
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-  var sql = "SELECT * FROM Users";
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log("Table created");
-       console.log(result);
-  });
-});*/
-
-/*
-try {
-	connection.connect();
-    console.log("conexion correcta");
-    //INSERTS
-  var sql = "SELECT * FROM users";
-    
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log("1 record inserted");
-  });
-	
-} catch(e) {
-	console.log('Database Connetion failed:' + e);
-}
-
-*/
-
-
-/*
-const pg = require('pg');
-//const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/GoldTales';
-var connectionString = "postgres://postgres:postgres@localhost:5432/GoldTales";
-
-
-
-try {       
-	const client = new pg.Client(connectionString);
-    client.connect();
-    console.log("conexion correcta");
-    var query = client.query("SELECT * FROM users");
-    query.on("end", function (result) {
-    console.log(result);
-    client.end();
-});
-    
-	
-} catch(e) {
-	console.log('Database Connetion failed:' + e);
-}
-*/
 const pg = require('pg');
 var conString = "postgres://postgres:postgres@localhost:5432/GoldTales";
-const client = new pg.Client(conString);
-app.get('/miau', (req, res, next) => {
 
+
+app.get('/cargar', (req, res, next) => {
+ const client = new pg.Client(conString);
 client.connect(function(err) {
 if(err) {
 return console.error('could not connect to postgres', err);
 return res.status(500).json({success: false, data: err});
 }
 
-client.query('SELECT * FROM Users;', function(err, result) {
+client.query('SELECT * FROM Stories;', function(err, result) {
 if(err) {
 return console.error('error running query', err);
 }
 console.log("mi: "+result.rows[0].name);
 console.log(result);
-return res.json(result);
+    client.end();
+return res.json(result.rows);
+    
 
-client.end();
+
 });
 });
 
 });
 
 
+
+  
 
 
 app.listen(8080);

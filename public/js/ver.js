@@ -3,8 +3,9 @@ var v;
 var controladorImagenes = 0;
 
 $(document).ready(function () {
+    
     var arrayCuentos = [];
-    $.getJSON('../php/datos.json', function (data) {
+   /* $.getJSON('../php/datos.json', function (data) {
         for (let objeto of data) {
             for (let cuento of objeto.cuentos) {
                 let aux = new Cuento();
@@ -16,7 +17,60 @@ $(document).ready(function () {
 
             }
         }
+*/
+        
+   /* var datos="";
+      $.ajax({
+            url: '/cargar',
+            method: 'GET',
+            
+            success: function (data) {
+                console.log(data);
+                alert(data);
+                datos=data;
+            }
+        });
+    
+    
+    alert("mpstrando"+datos);
+    alert(datos);
+    */
+    
+    
+    
+    
+    
+    var datos="";
+$.ajax({
+url: '/cargar',
+type: 'GET',
 
+cache: false,
+contentType: false,
+processData: false,
+
+success: function (data) {
+
+console.log(data);
+datos=data;
+},
+//si ha ocurrido un error
+error: function () {
+console.log("error");
+
+}
+});
+
+alert("Disfruta de todos los cuentos!" + datos);
+alert(datos);
+    
+    
+    
+    
+    
+    
+    
+    
 
         //mostrar los cuentos
         $("#principal").empty();
