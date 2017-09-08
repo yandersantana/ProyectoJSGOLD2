@@ -1,9 +1,74 @@
 var a = 0;
 var v;
 var controladorImagenes = 0;
+function leerCuento() {
+var datos="";
+$.ajax({
+url: '/cargar',
+type: 'GET',
 
-$(document).ready(function () {
+cache: false,
+contentType: false,
+processData: false,
+
+success: function (data) {
+datos=data;
+},
+//si ha ocurrido un error
+error: function () {
+console.log("error");
+
+}
+});
+
+alert("Visitanos en Facebook!" );
+     $("#principal").empty();
+    /*    for (let value of datos) {
+            console.log(value);
+            console.log("hola soy un cuento" + datos);
+             console.log(value.title);
+                $("#principal").append('<li><div class="col-lg-4"> '+ value.title+ '</div></a></li>');
+        }*/
     
+    
+    
+$.each(datos, function (index, elem) {
+var img;
+        console.log(elem);
+var datosid=elem.id;
+
+$.ajax({
+url: '/imagenes',
+type: 'POST',
+data: elem,
+cache: false,
+
+success: function (data) {
+
+console.log(data);
+img=data[0].src;
+},
+//si ha ocurrido un error
+error: function () {
+console.log("error");
+
+}
+});
+//<img id='imghome' src='" + img + "' alt=''>\
+alert("Visitanos En twitter"+img);
+alert("Pinterest Amigos"+img);
+
+
+  $("#principal").append('<li><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + img + '>'+  elem.title + '</div></a></li>');
+
+    
+    
+});
+           }
+$(document).ready(function () {
+     
+    leerCuento();
+   
     var arrayCuentos = [];
    /* $.getJSON('../php/datos.json', function (data) {
         for (let objeto of data) {
@@ -15,7 +80,7 @@ $(document).ready(function () {
 
                 exportar(arrayCuentos);
 
-            }
+        } 
         }
 */
         
@@ -38,7 +103,7 @@ $(document).ready(function () {
     
     
     
-    
+   /* 
     
     var datos="";
 $.ajax({
@@ -83,10 +148,10 @@ alert(datos);
             }
 
         }
-
+*/   
     });
 
-
+/*
 
 
 
@@ -225,4 +290,4 @@ function mostrarCuento(v, arrayCuentos) {
 
     }
 
-}
+}*/

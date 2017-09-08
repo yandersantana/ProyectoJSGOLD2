@@ -134,7 +134,7 @@ function crearCuento() {
 $(document).ready(function () {
     //  cuentosPorDefault();
     cargar();
-leerCuento();
+
   ActivarDroppablePreguntas();
     
     
@@ -410,50 +410,7 @@ leerCuento();
 });
 
 
-function leerCuento() {
-var datos="";
-$.ajax({
-url: '/cargar',
-type: 'GET',
 
-cache: false,
-contentType: false,
-processData: false,
-
-success: function (data) {
-
-console.log(data);
-datos=data;
-},
-//si ha ocurrido un error
-error: function () {
-console.log("error");
-
-}
-});
-
-alert("Disfruta de todos los cuentos!" + datos);
-alert(datos);
-    
-    
-    
-    
-    
-    
-     $("#principal").empty();
-        for (let value of datos) {
-            console.log(value);
-            console.log("hola soy un cuento" + datos);
-             console.log(value.title);
-                $("#principal").append('<li><div class="col-lg-4"><img class="imagenesCuentos" >' + value.title+ '</div></a></li>');
-        }
-    
-    
-    
-    
-    
-    
-};
 
 
 

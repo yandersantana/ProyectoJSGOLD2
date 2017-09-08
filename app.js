@@ -70,6 +70,8 @@ app.post('/subir', (req, res) => {
 const pg = require('pg');
 var conString = "postgres://postgres:postgres@localhost:5432/GoldTales";
 
+app.use(parser.json()); // for parsing application/json
+app.use(parser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.get('/cargar', (req, res, next) => {
  const client = new pg.Client(conString);
@@ -79,13 +81,13 @@ return console.error('could not connect to postgres', err);
 return res.status(500).json({success: false, data: err});
 }
 
-client.query('SELECT * FROM Stories;', function(err, result) {
+client.query('SELECT * FROM Stories', function(err, result) {
 if(err) {
 return console.error('error running query', err);
 }
-console.log("mi: "+result.rows[0].name);
-console.log(result);
+    console.log(result);
     client.end();
+
 return res.json(result.rows);
     
 
@@ -96,7 +98,31 @@ return res.json(result.rows);
 });
 
 
+app.post('/imagenes', (req, res) => {
+var client = new pg.Client(conString);
+var id=req.body.id;
+client.connect(function(err) {
+if(err) {
+return console.error('could not connect to postgres', err);
+return res.status(500).json({success: false, data: err});
+}
 
+client.query('SELECT * FROM imagens WHERE stories_id=' + id + ';', function(err, result) {
+if(err) {
+return console.error('error running query', err);
+}
+
+//console.log(result);
+client.end();
+return res.json(result.rows);
+
+
+});
+
+});
+
+
+});
   
 
 
