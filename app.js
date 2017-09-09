@@ -165,4 +165,63 @@ app.post('/audios', (req, res) => {
 
 });
 
+app.post('/preguntas', (req, res) => {
+    var client = new pg.Client(conString);
+    var id = req.body.id;
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({
+                success: false,
+                data: err
+            });
+        }
+
+        client.query('SELECT * FROM questions WHERE stories_id=' + id + ';', function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+
+            //console.log(result);
+            client.end();
+            return res.json(result.rows);
+
+
+        });
+
+    });
+
+
+});
+
+
+app.post('/imagenesPreguntas', (req, res) => {
+    var client = new pg.Client(conString);
+    var id = req.body.id;
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({
+                success: false,
+                data: err
+            });
+        }
+
+        client.query('SELECT * FROM imagensQuestions WHERE question_id=' + id + ';', function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+
+            //console.log(result);
+            client.end();
+            return res.json(result.rows);
+
+
+        });
+
+    });
+
+
+});
+
 app.listen(8080);
