@@ -1,22 +1,24 @@
 var express = require('express');
-var exphbs  = require('express-handlebars');
-var mysql  = require('mysql');
-var parser  = require('body-parser');
+var exphbs = require('express-handlebars');
+var mysql = require('mysql');
+var parser = require('body-parser');
 
 
 var formidable = require('formidable'),
     http = require('http'),
     util = require('util'),
-    fs   = require('fs-extra');
+    fs = require('fs-extra');
 
- 
+
 var app = express();
 
 app.use(express.static('public'));
- 
-app.engine('handlebars', exphbs({defaultLayout: 'plantilla'}));
+
+app.engine('handlebars', exphbs({
+    defaultLayout: 'plantilla'
+}));
 app.set('view engine', 'handlebars');
- 
+
 app.get('/', function (req, res) {
     res.render('partials/home');
 });
@@ -32,21 +34,23 @@ app.get('/crearCuento', function (req, res) {
 
 
 app.post('/subir', (req, res) => {
-  req.fields; // contains non-file fields 
-  req.files; // contains files 
+    req.fields; // contains non-file fields 
+    req.files; // contains files 
 
-    
+
     var form = new formidable.IncomingForm();
- 
- // parse a file upload
-    form.parse(req, function(err, fields, files) {
-      res.writeHead(200, {'content-type': 'text/plain'});
-    
-      //res.end(util.inspect({fields: fields, files: files}));
-        
-      
+
+    // parse a file upload
+    form.parse(req, function (err, fields, files) {
+        res.writeHead(200, {
+            'content-type': 'text/plain'
+        });
+
+        //res.end(util.inspect({fields: fields, files: files}));
+
+
     });
-    form.on('end', function(fields, files) {
+    form.on('end', function (fields, files) {
         /* Temporary location of our uploaded file */
         var temp_path = this.openedFiles[0].path;
         /* The file name of the uploaded file */
@@ -54,7 +58,7 @@ app.post('/subir', (req, res) => {
         console.log(file_name);
         /* Location where we want to copy the uploaded file */
         var new_location = 'public/imagenes/historias/';
-        fs.copy(temp_path, new_location + file_name, function(err) {  
+        fs.copy(temp_path, new_location + file_name, function (err) {
             if (err) {
                 console.error(err);
             } else {
@@ -63,7 +67,7 @@ app.post('/subir', (req, res) => {
         });
         res.end(file_name);
     });
-      
+
 });
 
 
@@ -71,59 +75,94 @@ const pg = require('pg');
 var conString = "postgres://postgres:postgres@localhost:5432/GoldTales";
 
 app.use(parser.json()); // for parsing application/json
-app.use(parser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(parser.urlencoded({
+    extended: true
+})); // for parsing application/x-www-form-urlencoded
 
 app.get('/cargar', (req, res, next) => {
- const client = new pg.Client(conString);
-client.connect(function(err) {
-if(err) {
-return console.error('could not connect to postgres', err);
-return res.status(500).json({success: false, data: err});
-}
+    const client = new pg.Client(conString);
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({
+                success: false,
+                data: err
+            });
+        }
 
-client.query('SELECT * FROM Stories', function(err, result) {
-if(err) {
-return console.error('error running query', err);
-}
-    console.log(result);
-    client.end();
+        client.query('SELECT * FROM Stories', function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+            console.log(result);
+            client.end();
 
-return res.json(result.rows);
-    
+            return res.json(result.rows);
 
 
-});
-});
+
+        });
+    });
 
 });
 
 
 app.post('/imagenes', (req, res) => {
-var client = new pg.Client(conString);
-var id=req.body.id;
-client.connect(function(err) {
-if(err) {
-return console.error('could not connect to postgres', err);
-return res.status(500).json({success: false, data: err});
-}
+    var client = new pg.Client(conString);
+    var id = req.body.id;
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({
+                success: false,
+                data: err
+            });
+        }
 
-client.query('SELECT * FROM imagens WHERE stories_id=' + id + ';', function(err, result) {
-if(err) {
-return console.error('error running query', err);
-}
+        client.query('SELECT * FROM imagens WHERE stories_id=' + id + ';', function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
 
-//console.log(result);
-client.end();
-return res.json(result.rows);
+            //console.log(result);
+            client.end();
+            return res.json(result.rows);
+
+
+        });
+
+    });
 
 
 });
 
-});
+app.post('/audios', (req, res) => {
+    var client = new pg.Client(conString);
+    var id = req.body.id;
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({
+                success: false,
+                data: err
+            });
+        }
+
+        client.query('SELECT * FROM audios WHERE stories_id=' + id + ';', function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+
+            //console.log(result);
+            client.end();
+            return res.json(result.rows);
+
+
+        });
+
+    });
 
 
 });
-  
-
 
 app.listen(8080);

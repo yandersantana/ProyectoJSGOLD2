@@ -44,6 +44,30 @@ function peticionImagenes(elem, callback) {
 
 }
 
+function peticionAudios(elem, callback) {
+    var audio;
+    console.log(elem);
+    $.ajax({
+        url: '/audios',
+        type: 'POST',
+        data: elem,
+        cache: false,
+
+        success: function (data) {
+            console.log(data);
+            console.log(data);
+            audio = data;
+            callback(audio);
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+
+}
+
 function peticionCuentos(callback) {
     var datos = "";
     $.ajax({
@@ -85,27 +109,41 @@ function mostrarCuento(e) {
                 $("#descripcion").text(elem.description);
                 $("#creditos").text(elem.credits);
                 peticionImagenes(elem, function (imagen) {
-                    var nrodeImagen = 0;
-                    //solo llama a la primera
-                    $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[0].src + '  ">');
-
-                    $("#siguiente").click(function () {
-                        $(".col-lg-10").empty();
-                        nrodeImagen++;
-                        console.log("final es"+ imagen.length);
-                        if (nrodeImagen < imagen.length) {
-                            $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[nrodeImagen].src + '  ">');
-                        }
-                    });
-
-                    $("#anterior").click(function () {
-                        nrodeImagen = 0;
-                        console.log(nrodeImagen);
-                        $(".col-lg-10").empty();
+                    peticionAudios(elem, function (audio) {
+                        var nrodeImagen = 0;
+                        var nrodeAudio = 0;
+                        //solo llama a la primera
                         $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[0].src + '  ">');
+                        $("#au").empty();
+                        $("#au").append("<audio controls><source src='" + audio[0].src + "' type='audio/mpeg'></audio>");
+
+                        $("#siguiente").click(function () {
+                             $("#au").empty();
+                            $(".col-lg-10").empty();
+                            nrodeImagen++;
+                            nrodeAudio++;
+                            console.log("final es" + imagen.length);
+                            if (nrodeImagen < imagen.length) {
+                                $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[nrodeImagen].src + '  ">');
+
+                            }
+                            //audio
+                            if (nrodeAudio < audio.length) {
+                               
+                                $("#au").append("<audio controls><source src='" + audio[nrodeAudio].src + "' type='audio/mpeg'></audio>");
+                            }
+                        });
+
+                        $("#anterior").click(function () {
+                            nrodeImagen = 0;
+                            console.log(nrodeImagen);
+                            $(".col-lg-10").empty();
+                            $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[0].src + '  ">');
+                            $("#au").empty();
+                            $("#au").append("<audio controls><source src='" + audio[0].src + "' type='audio/mpeg'></audio>");
+                        });
 
                     });
-
                 });
             }
         });
@@ -161,7 +199,7 @@ $(document).ready(function () {
     $('body').on('click', '#principal a', function () {
         modal.style.display = "block";
         var v = $(this).attr('id');
-        alert("Has seleccionado el cuento "+v);
+        alert("Has seleccionado el cuento " + v);
         mostrarCuento(v);
     })
 
