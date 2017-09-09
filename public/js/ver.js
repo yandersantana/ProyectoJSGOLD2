@@ -10,8 +10,8 @@ function indiceCuentos() {
             var img;
             console.log(elem);
             var datosid = elem.id;
-            peticionImagenes(elem,function (imagen) {
-              //  alert("Pinterest amigos")
+            peticionImagenes(elem, function (imagen) {
+                //  alert("Pinterest amigos")
                 $("#principal").append('<li><a id=' + elem.id + '><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + imagen[0].src + '>' + elem.title + '</div></a></li>');
 
             });
@@ -20,7 +20,7 @@ function indiceCuentos() {
 }
 
 //ver imagenes
-function peticionImagenes(elem,callback) {
+function peticionImagenes(elem, callback) {
     var img;
     console.log(elem);
     $.ajax({
@@ -30,7 +30,7 @@ function peticionImagenes(elem,callback) {
         cache: false,
 
         success: function (data) {
-console.log(data);
+            console.log(data);
             console.log(data);
             img = data;
             callback(img);
@@ -84,7 +84,29 @@ function mostrarCuento(e) {
                 $("#nombreCuento").text(elem.title);
                 $("#descripcion").text(elem.description);
                 $("#creditos").text(elem.credits);
+                peticionImagenes(elem, function (imagen) {
+                    var nrodeImagen = 0;
+                    //solo llama a la primera
+                    $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[0].src + '  ">');
 
+                    $("#siguiente").click(function () {
+                        $(".col-lg-10").empty();
+                        nrodeImagen++;
+                        console.log("final es"+ imagen.length);
+                        if (nrodeImagen < imagen.length) {
+                            $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[nrodeImagen].src + '  ">');
+                        }
+                    });
+
+                    $("#anterior").click(function () {
+                        nrodeImagen = 0;
+                        console.log(nrodeImagen);
+                        $(".col-lg-10").empty();
+                        $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[0].src + '  ">');
+
+                    });
+
+                });
             }
         });
     });
@@ -122,6 +144,7 @@ $(document).ready(function () {
 
     // When the user clicks on <span> (x), close the modal
     span.onclick = function () {
+        location.reload();
         modal.style.display = "none";
 
     }
@@ -138,7 +161,7 @@ $(document).ready(function () {
     $('body').on('click', '#principal a', function () {
         modal.style.display = "block";
         var v = $(this).attr('id');
-        alert(v);
+        alert("Has seleccionado el cuento "+v);
         mostrarCuento(v);
     })
 
