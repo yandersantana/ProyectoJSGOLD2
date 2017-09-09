@@ -60,7 +60,7 @@ alert("Visitanos En twitter"+img);
 alert("Pinterest Amigos"+img);
 
 
-  $("#principal").append('<li><a id=' + a.toString() + '><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + img + '>'+  elem.title + '</div></a></li>');
+  $("#principal").append('<li><a id=' + elem.id + '><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + img + '>'+  elem.title + '</div></a></li>');
   a++;
     
 });
@@ -68,11 +68,16 @@ alert("Pinterest Amigos"+img);
 $(document).ready(function () {
      
     indiceCuentos();
- 
+  $('body').on('click', '#principal a', function () {
+       // modal.style.display = "block";
+        v = $(this).attr('id');
+        alert(v);
+    })
+
     });
 
 
-
+function mostrarCuento() {
 
 
     //Ver cuentos
@@ -101,15 +106,9 @@ $(document).ready(function () {
         }
     }
 
-
+}
     //slider
-    $('body').on('click', '#principal a', function () {
-        controladorImagenes = 0;
-        modal.style.display = "block";
-        v = $(this).attr('id');
-        mostrarCuento(v, arrayCuentos);
-    })
-
+   
 /*
 
 
