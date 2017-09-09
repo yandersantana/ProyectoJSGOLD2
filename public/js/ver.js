@@ -224,7 +224,8 @@ function mostrarCuento(e) {
 
                                 } else { //
                                     alert("fin del cuento");
-                                   $("#siguiente").disable=true;//cuando llegue a la ultima se deshabilita el boton sgt
+                                    
+                                   $("#siguiente").prop('disabled', true);//cuando llegue a la ultima se deshabilita el boton sgt
                                 }
                                 //audio
                                 if (nrodeAudio < audio.length) {
@@ -235,7 +236,7 @@ function mostrarCuento(e) {
                         });
 
                         $("#anterior").click(function () {
-                            $("#siguiente").disable=false;//se vuelve a habilitar sgt
+                         $("#siguiente").prop('disabled', false);//cuando llegue a la ultima se deshabilita el boton sgt
                             nrodeImagen = 0;
                             console.log(nrodeImagen);
                             $(".col-lg-10").empty();
