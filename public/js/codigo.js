@@ -669,10 +669,6 @@ function deleteCuento(id) {
 
 
 
-
-
-
-
 function showMessage(message) {
     $(".messages").html("").show();
     $(".messages").html(message);
