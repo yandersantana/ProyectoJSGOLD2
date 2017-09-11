@@ -1,25 +1,57 @@
-.iconos2 img{
+.iconos2 img {
     width: 120px;
     height: 100px;
     float: right;
     margin-top: 1px;
-   
-}
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+.myId {
+    background-color: #ff3333;
+    font-size: 20px;
+      text-align: center;
+    margin-left: 15px
+
+}
+
+
+.myTitle {
+    background-color: antiquewhite;
+    font-size: 15px;
+    text-align: center;
+      margin-left: 15px
+}
+
+.aliIz {
+    text-align: center;
+      margin-left: 50px
+}
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+
 /* Modal Content */
+
 .modal-content {
     position: relative;
     background-color: #fefefe;
@@ -27,25 +59,41 @@
     padding: 0;
     border: 1px solid #888;
     width: 100%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.4s
 }
 
+
 /* Add Animation */
+
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
-    to {top:0; opacity:1}
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
 }
 
 @keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
 }
 
+
 /* The Close Button */
+
 .close {
     color: white;
     float: right;
@@ -66,7 +114,9 @@
     color: white;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+    padding: 2px 16px;
+}
 
 .modal-footer {
     padding: 2px 16px;
@@ -82,16 +132,14 @@
     background: url(../imagenes/2.png)no-repeat;
     background-position: top;
     background-size: 60%;
-     float: right;
+    float: right;
     text-align: center;
-    
 }
-.imagenSlider{
+
+.imagenSlider {
     width: auto;
     height: auto
-    
-    }
-
+}
 
 .fondoPaginas {
     background: url(../imagenes/fondo.jpg) fixed;
@@ -100,6 +148,7 @@
     -o-background-size: cover;
     background-size: cover;
 }
+
 .fondo {
     background: url(../imagenes/imagendeprueba.jpg) fixed;
     -webkit-background-size: cover;
@@ -108,12 +157,12 @@
     background-size: cover;
 }
 
-
 .caja2 {
     margin-top: 270px;
     background-color: transparent;
     box-sizing: border-box;
 }
+
 .img-responsive,
 .thumbnail>img,
 .thumbnail a>img,
@@ -123,12 +172,13 @@
     max-width: 70%;
     height: auto;
 }
+
 @media (max-width: 1200px) {
     .caja2 {
         display: none;
     }
-
 }
+
 .imagenesUl {
     width: 90.5%;
 }
@@ -138,18 +188,14 @@
     height: 150px;
 }
 
-.tit{
+.tit {
     text-align: center;
-     color:  #0099ff;
-     
+    color: #0099ff;
 }
 
-.tit2{
-     color:#3399ff;
-     
+.tit2 {
+    color: #3399ff;
 }
-
-
 
 .imagenes3 {
     position: relative;
@@ -159,33 +205,30 @@
     margin-bottom: 2px;
     z-index: 1;
     background-color: transparent;
-  
-    
 }
 
 .cuentos {
     position: relative;
-  overflow: hidden;
+    overflow: hidden;
     margin-bottom: 2px;
-             margin-left:40px;
-     margin-right:40px;
+    margin-left: 40px;
+    margin-right: 40px;
     z-index: 1;
     width: 250px;
     height: 200px;
     background-color: transparent;
-   
 }
+
 .imagenes2 {
     position: relative;
-   
     overflow: hidden;
     margin-bottom: 2px;
     z-index: 1;
     width: 150px;
     height: 100px;
     background-color: transparent;
-   
 }
+
 .button3 {
     position: relative;
     background-color: blueviolet;
@@ -195,12 +238,14 @@
     padding: 10px;
     width: 100px;
     text-align: center;
-    -webkit-transition-duration: 0.4s; /* Safari */
+    -webkit-transition-duration: 0.4s;
+    /* Safari */
     transition-duration: 0.4s;
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
 }
+
 .button2 {
     position: relative;
     background-color: coral;
@@ -210,12 +255,14 @@
     padding: 10px;
     width: 100px;
     text-align: center;
-    -webkit-transition-duration: 0.4s; /* Safari */
+    -webkit-transition-duration: 0.4s;
+    /* Safari */
     transition-duration: 0.4s;
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
 }
+
 .button {
     position: relative;
     background-color: #4CAF50;
@@ -225,12 +272,14 @@
     padding: 10px;
     width: 100px;
     text-align: center;
-    -webkit-transition-duration: 0.4s; /* Safari */
+    -webkit-transition-duration: 0.4s;
+    /* Safari */
     transition-duration: 0.4s;
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
 }
+
 .button {
     position: relative;
     background-color: #4CAF50;
@@ -240,7 +289,8 @@
     padding: 10px;
     width: 100px;
     text-align: center;
-    -webkit-transition-duration: 0.4s; /* Safari */
+    -webkit-transition-duration: 0.4s;
+    /* Safari */
     transition-duration: 0.4s;
     text-decoration: none;
     overflow: hidden;
@@ -295,9 +345,10 @@
     background: url(../imagenes/3.png)no-repeat;
     background-position: top;
     background-size: 60%;
-     float: right;
-     text-align: center
+    float: right;
+    text-align: center
 }
+
 ul {
     list-style-type: none;
     margin: 0;

@@ -867,14 +867,35 @@ function editarCuento(){
                 
                 //contCuento = $(".nav-dot").length;
                 
-                
+                $.ajax({
+                        url: '/listarAudios',
+                        type: 'POST',
+                        data: elem,
+                        cache: false,
+
+                        success: function (data) {
+                           $.each(data, function (index, elem) {
+                            index++;
+                                
+                                $("#au" + index+ "").append("<audio id='draggable' controls><source src='" + elem.src + "' type='audio/mpeg'></audio> ");
+
+
+                            });
+                          
+                        },
+                        //si ha ocurrido un error
+                        error: function () {
+                            console.log("error");
+
+                        }
+                    });
                 
                 
                 
                 
                 //EDITAR PREGUNTAS
                     
-                    $.ajax({
+                    /*$.ajax({
                         url: '/listarPreguntas',
                         type: 'POST',
                         data: elem,
@@ -917,7 +938,7 @@ function editarCuento(){
                             console.log("error");
 
                         }
-                    });
+                    });*/
                
             },
             //si ha ocurrido un error

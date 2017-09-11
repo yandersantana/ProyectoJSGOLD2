@@ -27,12 +27,12 @@ function indiceCuentos() {
             var datosid = elem.id;
             peticionImagenes(elem, function (imagen) {
                 //  alert("Pinterest amigos")
-                $("#principal").append('<li><a id=' + elem.id + '><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + imagen[0].src + '>' + elem.title + '<p>'+elem.id+'</p></div></li>');
+                $("#principal").append('<li><a id=' + elem.id + '><h2 class="myTitle">' + elem.title + '</h2><p class="myId">'+elem.id+'</p><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + imagen[0].src + '></div></li>');
 
             });
         });
     });
-}
+} 
 
 //ver imagenes
 function peticionImagenes(elem, callback) {
