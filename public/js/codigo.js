@@ -43,7 +43,7 @@ function enviarCuento(user, callback) {
             for (imagen of user.cuento.imagenes) {
 
                 var imagenesCuento = {
-                    id: idCuento[0].id,
+                    id: idCuento[0].id +1,
                     src: imagen.src
                 }
 
@@ -69,7 +69,7 @@ function enviarCuento(user, callback) {
             if (user.cuento.audios != undefined ) {
                 for (audio of user.cuento.audios) {
                     var audiosCuento = {
-                        id: idCuento[0].id,
+                        id: idCuento[0].id +1,
                         src: audio.src
                     }
 
@@ -97,7 +97,7 @@ function enviarCuento(user, callback) {
                 for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
                     if (pregunta != undefined  && pregunta.pregunta != "") {
                         var ask = {
-                            id: idCuento[0].id,
+                            id: idCuento[0].id +1,
                             pregu: pregunta.pregunta,
                             respu: pregunta.respuesta
                         }
@@ -122,9 +122,9 @@ function enviarCuento(user, callback) {
                             success: function (idPregunta) { //obtenemos el ultimo id de la pregunta guardada
                                 for (imagen of preguntaCopiada.imagens) {
                                     console.log(imagen.src);
-                                    console.log(idPregunta[0].id);
+                                    console.log(idPregunta[0].id );
                                     var imagenesPregunta = {
-                                        id: idPregunta[0].id,
+                                        id: idPregunta[0].id + 1,
                                         src: imagen.src
                                     }
 

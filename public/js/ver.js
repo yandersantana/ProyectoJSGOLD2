@@ -2,6 +2,7 @@ var v;
 var controladorImagenes = 0;
 //ver todos los cuentos que hay
 function escribirPreguntas(pregunta, imagenes, respuesta) {
+    console.log("soy imagenes"+imagenes[0].src+imagenes[1].src +imagenes[2].src  )
     $("#validacion").append('<div class="container"><h1>' + pregunta + '</h1><div class="row"><div class="col-lg-3"><a id="1"><img   alt=" " class="img-responsive" src="' + imagenes[0].src + '  "></a></div><div class="col-lg-3"><a id="2"><img   alt=" " class="img-responsive" src="' + imagenes[1].src + '  "></a></div><div class="col-lg-3"><a id="3"><img   alt=" " class="img-responsive" src="' + imagenes[2].src + '  "></a></div></div></div>');
 
     $('body').on('click', '#validacion a', function () {
