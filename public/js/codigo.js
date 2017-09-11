@@ -547,6 +547,13 @@ $(document).ready(function () {
         alert("presiono "+ idcuent);
         deleteCuento(idcuent);      
     });
+    
+    
+     $("#buttonEditar").click(function () {
+           var idcuent = $('input:text[id=editcuento]').val();
+        alert("presiono "+ idcuent);
+        enviarEditar(idcuent);      
+    });
 
 });
 
@@ -798,3 +805,131 @@ function guardarPreguntas() {
     console.log(ImPreguntas2);
     console.log(cue);
 }
+
+
+
+
+function enviarEditar(id) {  
+    alert("recibie l cuento kkk"+id);
+    localStorage.setItem("var", id);
+    window.location = "/editarCuento";
+};
+
+
+
+function editarCuento(){
+    var idcue = localStorage.getItem("var");
+    
+    var elem = {idcuento: idcue} 
+    alert("ceunto"+idcue);
+    alert("entro aqio");
+    $.ajax({
+            url: '/cargarCuentoPorId',
+            type: 'POST',
+            data: elem,
+            cache: false,
+
+            success: function (data) {
+                $('input:text[name=fname]').val(data[0].title);
+               $('input:text[name=fdescripcion]').val(data[0].description);
+                 $('input:text[name=fcreditos]').val(data[0].credits);
+                
+            },
+            //si ha ocurrido un error
+            error: function () {
+                console.log("error");
+
+            }
+        });
+    
+    
+     $.ajax({
+            url: '/listarImagenes',
+            type: 'POST',
+            data: elem,
+            cache: false,
+          
+            success: function (data) {
+
+                console.log(data);
+                alert(data.length);
+                
+                
+                $.each(data, function (index, elem) {
+                    index++;
+                    alert("index"+index);
+                     $("#hojaBl" + index + "").empty(); // vaciar los contenedores en el caso que este lleno
+            $("#hojaBln" +index + "").append("<img src=" +elem.src + ">"); //agrego la imagen al contenedor del slider
+                    $("#n" + index + "").append("<img src=" +elem.src + ">"); //agrego la imagen a la pagina en miniatura.
+                    
+                   
+                });
+                
+                //contCuento = $(".nav-dot").length;
+                
+                
+                
+                
+                
+                
+                //EDITAR PREGUNTAS
+                    
+                    $.ajax({
+                        url: '/listarPreguntas',
+                        type: 'POST',
+                        data: elem,
+                        cache: false,
+
+                        success: function (data) {
+                            preguntas.removeAll;
+                            if(data.length==1){
+                                $(".fondoAudioP").append("<audio controls><source src='" + data[0].audio + "' type='audio/mp3'></audio>");
+                                $(".fondoP1").html("<img id='img1' class='ui-widget-content' src='" +  data[0].img1 + "' />");
+                                $(".fondoP2").html("<img id='img1' class='ui-widget-content' src='" +  data[0].img2 + "' />");
+                                $(".respuesta").val( data[0].respuesta);
+                                
+                                var pregunta = new Pregunta();
+                                pregunta.directo(data[0].img1,data[0].img2, data[0].audio, data[0].respuesta);
+                                preguntas.push(pregunta);
+
+                            }
+                            if(data.length==2){
+                                $(".fondoAudioP").append("<audio controls><source src='" + data[0].audio + "' type='audio/mp3'></audio>");
+                                $(".fondoP1").html("<img id='img1' class='ui-widget-content' src='" +  data[0].img1 + "' />");
+                                $(".fondoP2").html("<img id='img1' class='ui-widget-content' src='" +  data[0].img2 + "' />");
+                                $(".respuesta").val( data[0].respuesta);
+                                var pregunta = new Pregunta();
+                                pregunta.directo(data[0].img1,data[0].img2, data[0].audio, data[0].respuesta);
+                                preguntas.push(pregunta);
+                                
+                                $(".fondoAudioP2").append("<audio controls><source src='" + data[1].audio + "' type='audio/mp3'></audio>");
+                                $(".fondo2P1").html("<img id='img1' class='ui-widget-content' src='" +  data[1].img1 + "' />");
+                                $(".fondo2P2").html("<img id='img1' class='ui-widget-content' src='" +  data[1].img2 + "' />");
+                                $(".respuesta2").val( data[1].respuesta);
+                                var pregunta2 = new Pregunta();
+                                pregunta2.directo(data[1].img1,data[1].img2, data[1].audio, data[1].respuesta);
+                                preguntas.push(pregunta2);
+                            }
+                          
+                        },
+                        //si ha ocurrido un error
+                        error: function () {
+                            console.log("error");
+
+                        }
+                    });
+               
+            },
+            //si ha ocurrido un error
+            error: function () {
+                console.log("error");
+
+            }
+        });
+        
+}
+
+
+
+
+

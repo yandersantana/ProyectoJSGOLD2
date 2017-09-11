@@ -31,6 +31,9 @@ app.get('/verHistoria', function (req, res) {
 app.get('/crearCuento', function (req, res) {
     res.render('partials/paginas/crearCuento');
 });
+app.get('/editarCuento', function (req, res) {
+    res.render('partials/paginas/editarCuento');
+});
 
 
 app.post('/subir', (req, res) => {
@@ -534,5 +537,56 @@ app.post('/eliminarPreguntasCuento', (req, res) => {
         });
     });
 });
+
+
+app.post('/cargarCuentoPorId', (req, res) => {
+    var client = new pg.Client(conString);
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({success: false, data: err});
+        }
+       
+        client.query('SELECT * FROM stories WHERE id='+ req.body.idcuento +';', function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+            
+            //console.log(result);
+            client.end();
+            return res.json(result.rows);
+            
+           
+        });
+        
+    });
+    
+   
+});
+
+
+
+app.post('/listarImagenes', (req, res) => {
+    var client = new pg.Client(conString);
+    var idcuento=req.body.idcuento;
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({success: false, data: err});
+        }
+
+        client.query('SELECT * FROM imagens WHERE stories_id=' + idcuento + ';', function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+             client.end();
+            return res.json(result.rows);         
+        });      
+    });   
+});
+
+
+
+
 
 app.listen(8080);
