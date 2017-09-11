@@ -366,7 +366,7 @@ app.post('/guardarPreguntaImagenes', (req, res) => {
             });
         }
 
-        client.query("INSERT INTO  imagensquestions  (src,  question_id) VALUES ('" + req.body.src + "', '" + req.body.id + "','" + req.body.id + "');", function (err, result) {
+        client.query("INSERT INTO  imagensquestions  (src,  question_id) VALUES ('" + req.body.src + "', '" + req.body.id + "');", function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }

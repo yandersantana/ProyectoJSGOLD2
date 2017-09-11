@@ -114,13 +114,13 @@ function enviarCuento(user, callback) {
 
                             }
                         });
-
+                       var preguntaCopiada=pregunta;
                         $.ajax({
                             url: '/idPregunta',
                             type: 'GET',
                             cache: false,
                             success: function (idPregunta) { //obtenemos el ultimo id de la pregunta guardada
-                                for (imagen of pregunta.imagens) {
+                                for (imagen of preguntaCopiada.imagens) {
                                     console.log(imagen.src);
                                     console.log(idPregunta[0].id);
                                     var imagenesPregunta = {
@@ -662,6 +662,7 @@ function guardarPreguntas() {
         item = {};
         item["src"] = AgrImg;
         ImPreguntas.push(item);
+       
     });
 
     $(".preg2 img").each(function () {
