@@ -9,30 +9,15 @@ var ImPreguntas2 = [];
 var ArrPreg = [];
 
 var idCuento = 5;
-//esto es para que aparezcan en la pagina Verhistorias como predeterminadas
-/*
-function leer() {
-    var usuarios2 = [];
-    $.getJSON('../php/datos.json', function (data) {
-        $.each(data, function (i, emp) {
-            console.log("xcxd"+emp);
-            var user= new Usuario(emp);
-            
-            usuarios2.push(user);
-        });
-    });  
-    alert("aqui probando"+usuarios2);
-    return usuarios2;
 
-};*/
 
 function enviarCuento(user, callback) {
     // var datos = "";
     var cuentero = {
-                    titulo: user.cuento.titulo,
-                    credito: user.cuento.creditos,
-                    descripcion: user.cuento.descripcion
-                }
+        titulo: user.cuento.titulo,
+        credito: user.cuento.creditos,
+        descripcion: user.cuento.descripcion
+    }
     $.ajax({
         url: '/guardarCuento',
         type: 'POST',
@@ -56,19 +41,20 @@ function enviarCuento(user, callback) {
         cache: false,
         success: function (idCuento) { //obtenemos el ultimo id del cuento guardado
             for (imagen of user.cuento.imagenes) {
+
                 var imagenesCuento = {
-                    id: idCuento,
-                    src: imagen
+                    id: idCuento[0].id,
+                    src: imagen.src
                 }
 
+                console.log("el id" + idCuento[0].id);
                 $.ajax({ //vamos guardando las imagenes del cuento
                     url: '/guardarImagenes',
                     type: 'POST',
                     data: imagenesCuento,
                     cache: false,
                     success: function (data) {
-                        //   datos = data;
-                        //callback(datos);
+
 
                     },
                     //si ha ocurrido un error
@@ -80,72 +66,94 @@ function enviarCuento(user, callback) {
 
 
             }
-            for (audio of user.cuento.audios) {
-                var audiosCuento = {
-                    id: idCuento,
-                    src: imagen
-                }
-
-                $.ajax({ //vamos guardando los Audios del cuento
-                    url: '/guardarAudios',
-                    type: 'POST',
-                    data: audiosCuento,
-                    cache: false,
-                    success: function (data) {
-                        //   datos = data;
-                        //callback(datos);
-
-                    },
-                    //si ha ocurrido un error
-                    error: function () {
-                        console.log("error");
-
+            if (user.cuento.audios != undefined) {
+                for (audio of user.cuento.audios) {
+                    var audiosCuento = {
+                        id: idCuento[0].id,
+                        src: audio.src
                     }
-                });
 
+                    $.ajax({ //vamos guardando los Audios del cuento
+                        url: '/guardarAudios',
+                        type: 'POST',
+                        data: audiosCuento,
+                        cache: false,
+                        success: function (data) {
+                            //   datos = data;
+                            //callback(datos);
 
-            }
+                        },
+                        //si ha ocurrido un error
+                        error: function () {
+                            console.log("error");
 
-            for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
-                var ask = {
-                    id: idCuento,
-                    pregu: pregunta.pregunta,
-                    respu: pregunta.respuesta
-                }
-
-                $.ajax({ //vamos guardando la pregunta 
-                    url: '/guardarPregunta',
-                    type: 'POST',
-                    data: ask,
-                    cache: false,
-                    success: function (preguId) {},
-                    //si ha ocurrido un error
-                    error: function () {
-                        console.log("error");
-
-                    }
-                });
-
-                $.ajax({
-                    url: '/idPregunta',
-                    type: 'GET',
-                    cache: false,
-                    success: function (idPregunta) { //obtenemos el ultimo id del cuento guardado
-                        for (imagen of pregunta.imagens) {
-                            var imagenesPregunta = {
-                                id: idPregunta,
-                                src: imagen
-                            }
                         }
-                    },
-                    //si ha ocurrido un error
-                    error: function () {
-                        console.log("error");
+                    });
+
+
+                }
+            }
+            if (user.cuento.preguntas != undefined) {
+                for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
+                    if (pregunta != undefined) {
+                        var ask = {
+                            id: idCuento[0].id,
+                            pregu: pregunta.pregunta,
+                            respu: pregunta.respuesta
+                        }
+
+                        $.ajax({ //vamos guardando la pregunta 
+                            url: '/guardarPregunta',
+                            type: 'POST',
+                            data: ask,
+                            cache: false,
+                            success: function (preguId) {},
+                            //si ha ocurrido un error
+                            error: function () {
+                                console.log("error");
+
+                            }
+                        });
+
+                        $.ajax({
+                            url: '/idPregunta',
+                            type: 'GET',
+                            cache: false,
+                            success: function (idPregunta) { //obtenemos el ultimo id de la pregunta guardada
+                                for (imagen of pregunta.imagens) {
+                                    console.log(imagen.src);
+                                    console.log(idPregunta[0].id);
+                                    var imagenesPregunta = {
+                                        id: idPregunta[0].id,
+                                        src: imagen.src
+                                    }
+
+                                    $.ajax({ //vamos guardando las imagenes de las preguntas 
+                                        url: '/guardarPreguntaImagenes',
+                                        type: 'POST',
+                                        data: imagenesPregunta,
+                                        cache: false,
+                                        success: function (pred) {},
+                                        //si ha ocurrido un error
+                                        error: function () {
+                                            console.log("error");
+
+                                        }
+                                    });
+                                }
+                            },
+                            //si ha ocurrido un error
+                            error: function () {
+                                console.log("error");
+
+                            }
+                        });
 
                     }
-                });
-
+                }
             }
+
+
         },
         //si ha ocurrido un error
         error: function () {
@@ -154,7 +162,7 @@ function enviarCuento(user, callback) {
         }
     });
 
-callback("Guardado");
+    callback("Guardado");
 
 
 }
@@ -359,12 +367,12 @@ $(document).ready(function () {
         guardarPreguntas();
 
         cuento2.constru(title, des, cre, cuentosIm, cuentosAu, ArrPreg);
-        var usuario = new Usuario(1, cuento2);
+        var usuario = new Usuario(1, cuento2); //creo el usuario
 
         //usuario.cuentos.push(cuento2);
         console.log("aqui pase un rato xxx2" + usuario);
 
-        enviarCuento(usuario, function (valio) {
+        enviarCuento(usuario, function (valio) { //envio la peticion
             if (valio == "Guardado") { //si lo guardo
                 alert("Cuento Guardado Amiguito");
             } else { //si  no lo guardo

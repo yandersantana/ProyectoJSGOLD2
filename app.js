@@ -283,12 +283,11 @@ app.post('/guardarImagenes', (req, res) => {
             });
         }
 
-        client.query("INSERT INTO  imagens  (src ,  stories_id) VALUES ('" + req.body.src + "', '" + req.body.id + "');", function (err, result) {
+        client.query("INSERT INTO  imagens  (src,  stories_id) VALUES ('" + req.body.src + "', '" + req.body.id + "');", function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }
 
-            //console.log(result);
             client.end();
             return res.json(result.rows);
 
@@ -356,6 +355,33 @@ app.post('/guardarPregunta', (req, res) => {
 
 });
 
+app.post('/guardarPreguntaImagenes', (req, res) => {
+    var client = new pg.Client(conString);
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({
+                success: false,
+                data: err
+            });
+        }
+
+        client.query("INSERT INTO  imagensquestions  (src,  question_id) VALUES ('" + req.body.src + "', '" + req.body.id + "','" + req.body.id + "');", function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+
+            //console.log(result);
+            client.end();
+            return res.json(result.rows);
+
+
+        });
+
+    });
+
+
+});
 
 app.get('/idPregunta', (req, res) => {
     var client = new pg.Client(conString);
