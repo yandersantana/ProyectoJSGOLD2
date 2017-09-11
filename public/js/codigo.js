@@ -952,6 +952,8 @@ function editarCuento() {
                                         } else if (srcimagen != undefined && rec == 1) {
                                              rec++;
                                             $("#ImP5").empty(); // vaciar los contenedores en el caso que este lleno
+                                            
+                                            
 
                                             $("#ImP5").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
 
