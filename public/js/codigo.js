@@ -43,7 +43,7 @@ function enviarCuento(user, callback) {
             for (imagen of user.cuento.imagenes) {
 
                 var imagenesCuento = {
-                    id: idCuento[0].id +1,
+                    id: idCuento[0].id + 1,
                     src: imagen.src
                 }
 
@@ -66,10 +66,10 @@ function enviarCuento(user, callback) {
 
 
             }
-            if (user.cuento.audios != undefined ) {
+            if (user.cuento.audios != undefined) {
                 for (audio of user.cuento.audios) {
                     var audiosCuento = {
-                        id: idCuento[0].id +1,
+                        id: idCuento[0].id + 1,
                         src: audio.src
                     }
 
@@ -95,9 +95,9 @@ function enviarCuento(user, callback) {
             }
             if (user.cuento.preguntas != undefined) {
                 for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
-                    if (pregunta != undefined  && pregunta.pregunta != "") {
+                    if (pregunta != undefined && pregunta.pregunta != "") {
                         var ask = {
-                            id: idCuento[0].id +1,
+                            id: idCuento[0].id + 1,
                             pregu: pregunta.pregunta,
                             respu: pregunta.respuesta
                         }
@@ -114,7 +114,7 @@ function enviarCuento(user, callback) {
 
                             }
                         });
-                       var preguntaCopiada=pregunta;
+                        var preguntaCopiada = pregunta;
                         $.ajax({
                             url: '/idPregunta',
                             type: 'GET',
@@ -122,7 +122,7 @@ function enviarCuento(user, callback) {
                             success: function (idPregunta) { //obtenemos el ultimo id de la pregunta guardada
                                 for (imagen of preguntaCopiada.imagens) {
                                     console.log(imagen.src);
-                                    console.log(idPregunta[0].id );
+                                    console.log(idPregunta[0].id);
                                     var imagenesPregunta = {
                                         id: idPregunta[0].id + 1,
                                         src: imagen.src
@@ -542,135 +542,139 @@ $(document).ready(function () {
 
 
 
-     $("#buttonEliminar").click(function () {
-           var idcuent = $('input:text[id=deletecuento]').val();
-        alert("presiono "+ idcuent);
-        deleteCuento(idcuent);      
+    $("#buttonEliminar").click(function () {
+        var idcuent = $('input:text[id=deletecuento]').val();
+        alert("presiono " + idcuent);
+        deleteCuento(idcuent);
     });
-    
-    
-     $("#buttonEditar").click(function () {
-           var idcuent = $('input:text[id=editcuento]').val();
-        alert("presiono "+ idcuent);
-        enviarEditar(idcuent);      
+
+
+    $("#buttonEditar").click(function () {
+        var idcuent = $('input:text[id=editcuento]').val();
+        alert("presiono " + idcuent);
+        enviarEditar(idcuent);
     });
 
 });
 
-function deleteCuento(id) {  
-    alert("Hola eliminar cuento"+id);
+function deleteCuento(id) {
+    alert("Hola eliminar cuento" + id);
     //AQUIIIIIIII ESTABA EL ERROR
     //var j = localStorage.getItem("var");
-    var elem = {idcuento: id}; //Variable transformada en objeto para enviarla en data
-    
+    var elem = {
+        idcuento: id
+    }; //Variable transformada en objeto para enviarla en data
+
     //alert("Hola eliminar cuento mii" );
-    
+
     $.ajax({
-            url: '/idPreguntaCuento',
-            type: 'POST',
-            // Form data
-            //datos del formulario
-            data: elem,
-            //necesario para subir archivos via ajax
-            cache: false,
-           
-            success: function (data) {
-               alert("miau "+data.length);
-                $.each(data, function (i, emp) {
-                     alert("idpreg "+emp.id);
-                    var elem2 = {idpreg: emp.id};
-                    $.ajax({
-                            url: '/eliminarImgPregCuento',
+        url: '/idPreguntaCuento',
+        type: 'POST',
+        // Form data
+        //datos del formulario
+        data: elem,
+        //necesario para subir archivos via ajax
+        cache: false,
+
+        success: function (data) {
+            alert("miau " + data.length);
+            $.each(data, function (i, emp) {
+                alert("idpreg " + emp.id);
+                var elem2 = {
+                    idpreg: emp.id
+                };
+                $.ajax({
+                    url: '/eliminarImgPregCuento',
+                    type: 'POST',
+                    data: elem2,
+                    cache: false,
+
+                    success: function (data) {
+
+                        alert("Se ha eliminado las imagenes cuento");
+                        //desde aqui noooooooooooooooooooooooooooooooooooooooooooo
+                        $.ajax({
+                            url: '/eliminarImagenesCuento',
                             type: 'POST',
-                            data: elem2,
+                            data: elem,
                             cache: false,
 
                             success: function (data) {
 
-                                   alert("Se ha eliminado las imagenes cuento");
-                                //desde aqui noooooooooooooooooooooooooooooooooooooooooooo
-                                    $.ajax({
-                                        url: '/eliminarImagenesCuento',
-                                        type: 'POST',
-                                        data: elem,
-                                        cache: false,
 
-                                        success: function (data) {
+                                alert("Se ha eliminado las imagenes");
+                                $.ajax({
+                                    url: '/eliminarAudiosCuento',
+                                    type: 'POST',
+                                    data: elem,
+                                    cache: false,
 
+                                    success: function (data) {
 
-                                            alert("Se ha eliminado las imagenes");
+                                        alert("Se ha eliminado los audios");
+                                        $.ajax({
+                                            url: '/eliminarPreguntasCuento',
+                                            type: 'POST',
+                                            data: elem,
+                                            cache: false,
+
+                                            success: function (data) {
+
+                                                alert("Se ha eliminado las preguntas");
                                                 $.ajax({
-                                                    url: '/eliminarAudiosCuento',
+                                                    url: '/eliminarCuento',
                                                     type: 'POST',
                                                     data: elem,
                                                     cache: false,
 
                                                     success: function (data) {
 
-                                                        alert("Se ha eliminado los audios");
-                                                                $.ajax({
-                                                                    url: '/eliminarPreguntasCuento',
-                                                                    type: 'POST',
-                                                                    data: elem,
-                                                                    cache: false,
+                                                        alert("Se ha eliminado el cuento");
 
-                                                                    success: function (data) {
+                                                    },
+                                                    //si ha ocurrido un error
+                                                    error: function () {
+                                                        console.log("error");
+                                                    }
+                                                });
 
-                                                                        alert("Se ha eliminado las preguntas");
-                                                                        $.ajax({
-                                                                            url: '/eliminarCuento',
-                                                                            type: 'POST',
-                                                                            data: elem,
-                                                                            cache: false,
-
-                                                                        success: function (data) {
-
-                                                                       alert("Se ha eliminado el cuento");
-
-                                                                    },
-                                                                            //si ha ocurrido un error
-                                                                            error: function () {
-                                                                                console.log("error");
-                                                                    }
-                                                                    });
-
-                                                                },
-                                                                    //si ha ocurrido un error
-                                                                    error: function () {
-                                                                        console.log("error");
-                                                                }
-                                                                });
+                                            },
+                                            //si ha ocurrido un error
+                                            error: function () {
+                                                console.log("error");
+                                            }
+                                        });
 
 
                                     },
-                                        //si ha ocurrido un error
-                                        error: function () {
-                                            console.log("error");
+                                    //si ha ocurrido un error
+                                    error: function () {
+                                        console.log("error");
                                     }
-                                    });
-                                        }
-
-                                    });   
-                                
-                                
-                                
-                                //desde aqui nada ---------------------------
-                            },
-                            //si ha ocurrido un error
-                            error: function () {
-                                console.log("error lalalla");
+                                });
                             }
-                    });
+
+                        });
+
+
+
+                        //desde aqui nada ---------------------------
+                    },
+                    //si ha ocurrido un error
+                    error: function () {
+                        console.log("error lalalla");
+                    }
                 });
-            },
-            //si ha ocurrido un error
-            error: function () {
-              console.log("error tomar id cuento");
-            }
-        });
-    
- 
-  
+            });
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error tomar id cuento");
+        }
+    });
+
+
+
 };
 
 
@@ -784,7 +788,7 @@ function guardarPreguntas() {
         item = {};
         item["src"] = AgrImg;
         ImPreguntas.push(item);
-       
+
     });
 
     $(".preg2 img").each(function () {
@@ -809,148 +813,202 @@ function guardarPreguntas() {
 
 
 
-function enviarEditar(id) {  
-    alert("recibie l cuento kkk"+id);
+function enviarEditar(id) {
+    alert("recibie l cuento kkk" + id);
     localStorage.setItem("var", id);
     window.location = "/editarCuento";
 };
 
 
 
-function editarCuento(){
+function editarCuento() {
+    $(".contPreguntas").show();
     var idcue = localStorage.getItem("var");
-    
-    var elem = {idcuento: idcue} 
-    alert("ceunto"+idcue);
+
+    var elem = {
+        idcuento: idcue
+    }
+    alert("ceunto" + idcue);
     alert("entro aqio");
     $.ajax({
-            url: '/cargarCuentoPorId',
-            type: 'POST',
-            data: elem,
-            cache: false,
+        url: '/cargarCuentoPorId',
+        type: 'POST',
+        data: elem,
+        cache: false,
 
-            success: function (data) {
-                $('input:text[name=fname]').val(data[0].title);
-               $('input:text[name=fdescripcion]').val(data[0].description);
-                 $('input:text[name=fcreditos]').val(data[0].credits);
-                
-            },
-            //si ha ocurrido un error
-            error: function () {
-                console.log("error");
+        success: function (data) {
+            $('input:text[name=fname]').val(data[0].title);
+            $('input:text[name=fdescripcion]').val(data[0].description);
+            $('input:text[name=fcreditos]').val(data[0].credits);
 
-            }
-        });
-    
-    
-     $.ajax({
-            url: '/listarImagenes',
-            type: 'POST',
-            data: elem,
-            cache: false,
-          
-            success: function (data) {
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
 
-                console.log(data);
-                alert(data.length);
-                
-                
-                $.each(data, function (index, elem) {
-                    index++;
-                    alert("index"+index);
-                     $("#hojaBl" + index + "").empty(); // vaciar los contenedores en el caso que este lleno
-            $("#hojaBln" +index + "").append("<img src=" +elem.src + ">"); //agrego la imagen al contenedor del slider
-                    $("#n" + index + "").append("<img src=" +elem.src + ">"); //agrego la imagen a la pagina en miniatura.
-                    
-                   
-                });
-                
-                //contCuento = $(".nav-dot").length;
-                
-                $.ajax({
-                        url: '/listarAudios',
-                        type: 'POST',
-                        data: elem,
-                        cache: false,
-
-                        success: function (data) {
-                           $.each(data, function (index, elem) {
-                            index++;
-                                
-                                $("#au" + index+ "").append("<audio id='draggable' controls><source src='" + elem.src + "' type='audio/mpeg'></audio> ");
+        }
+    });
 
 
-                            });
-                          
-                        },
-                        //si ha ocurrido un error
-                        error: function () {
-                            console.log("error");
+    $.ajax({
+        url: '/listarImagenes',
+        type: 'POST',
+        data: elem,
+        cache: false,
 
-                        }
+        success: function (data) {
+
+            console.log(data);
+            alert(data.length);
+
+
+            $.each(data, function (index, elem) {
+                index++;
+                alert("index" + index);
+                $("#hojaBl" + index + "").empty(); // vaciar los contenedores en el caso que este lleno
+                $("#hojaBln" + index + "").append("<img src=" + elem.src + ">"); //agrego la imagen al contenedor del slider
+                $("#n" + index + "").append("<img src=" + elem.src + ">"); //agrego la imagen a la pagina en miniatura.
+
+
+            });
+
+            //contCuento = $(".nav-dot").length;
+
+            $.ajax({
+                url: '/listarAudios',
+                type: 'POST',
+                data: elem,
+                cache: false,
+
+                success: function (data) {
+                    $.each(data, function (index, elem) {
+                        index++;
+
+                        $("#au" + index + "").append("<audio id='draggable' controls><source src='" + elem.src + "' type='audio/mpeg'></audio> ");
+
+
                     });
-                
-                
-                
-                
-                //EDITAR PREGUNTAS
-                    
-                    /*$.ajax({
-                        url: '/listarPreguntas',
-                        type: 'POST',
-                        data: elem,
-                        cache: false,
 
-                        success: function (data) {
-                            preguntas.removeAll;
-                            if(data.length==1){
-                                $(".fondoAudioP").append("<audio controls><source src='" + data[0].audio + "' type='audio/mp3'></audio>");
-                                $(".fondoP1").html("<img id='img1' class='ui-widget-content' src='" +  data[0].img1 + "' />");
-                                $(".fondoP2").html("<img id='img1' class='ui-widget-content' src='" +  data[0].img2 + "' />");
-                                $(".respuesta").val( data[0].respuesta);
-                                
-                                var pregunta = new Pregunta();
-                                pregunta.directo(data[0].img1,data[0].img2, data[0].audio, data[0].respuesta);
-                                preguntas.push(pregunta);
+                },
+                //si ha ocurrido un error
+                error: function () {
+                    console.log("error");
 
+                }
+            });
+
+            //listar preguntas
+            $.ajax({ //vamos extrayendo la pregunta 
+                url: '/listarPreguntas',
+                type: 'POST',
+                data: elem,
+                cache: false,
+                success: function (preguntaExtraida) {
+                    var cont = 1;
+                    if (preguntaExtraida != undefined) {
+                        for (p of preguntaExtraida) {
+                            if (p != undefined && cont == 1) {
+
+                                $('input:text[name=preg1]').val(p.question);
+                                $('input:text[name=resp1]').val(p.answer);
+                                listarImagenesPreguntas(p.id, function (imagenesExtraidasPregunta) { //envio la peticion
+                                    var rec = 0;
+                                    for (srcimagen of imagenesExtraidasPregunta) {
+
+                                        if (srcimagen != undefined && rec == 0) {
+                                            rec++;
+                                            $("#ImP1").empty(); // vaciar los contenedores en el caso que este lleno
+
+                                            $("#ImP1").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
+                                        } else if (srcimagen != undefined && rec == 1) {
+                                             rec++;
+                                            $("#ImP2").empty(); // vaciar los contenedores en el caso que este lleno
+
+                                            $("#ImP2").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
+
+                                        } else {
+                                            $("#ImP3").empty(); // vaciar los contenedores en el caso que este lleno
+
+                                            $("#ImP3").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
+                                        }
+
+                                    }
+
+                                });
+
+
+                            } else if (p != undefined && cont == 2) {
+                                $('input:text[name=preg2]').val(p.question);
+                                $('input:text[name=resp2]').val(p.answer);
+                                  listarImagenesPreguntas(p.id, function (imagenesExtraidasPregunta) { //envio la peticion
+                                    var rec = 0;
+                                    for (srcimagen of imagenesExtraidasPregunta) {
+
+                                        if (srcimagen != undefined && rec == 0) {
+                                            rec++;
+                                            $("#ImP4").empty(); // vaciar los contenedores en el caso que este lleno
+
+                                            $("#ImP4").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
+                                        } else if (srcimagen != undefined && rec == 1) {
+                                             rec++;
+                                            $("#ImP5").empty(); // vaciar los contenedores en el caso que este lleno
+
+                                            $("#ImP5").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
+
+                                        } else {
+                                            $("#ImP6").empty(); // vaciar los contenedores en el caso que este lleno
+
+                                            $("#ImP6").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
+                                        }
+
+                                    }
+
+                                });
                             }
-                            if(data.length==2){
-                                $(".fondoAudioP").append("<audio controls><source src='" + data[0].audio + "' type='audio/mp3'></audio>");
-                                $(".fondoP1").html("<img id='img1' class='ui-widget-content' src='" +  data[0].img1 + "' />");
-                                $(".fondoP2").html("<img id='img1' class='ui-widget-content' src='" +  data[0].img2 + "' />");
-                                $(".respuesta").val( data[0].respuesta);
-                                var pregunta = new Pregunta();
-                                pregunta.directo(data[0].img1,data[0].img2, data[0].audio, data[0].respuesta);
-                                preguntas.push(pregunta);
-                                
-                                $(".fondoAudioP2").append("<audio controls><source src='" + data[1].audio + "' type='audio/mp3'></audio>");
-                                $(".fondo2P1").html("<img id='img1' class='ui-widget-content' src='" +  data[1].img1 + "' />");
-                                $(".fondo2P2").html("<img id='img1' class='ui-widget-content' src='" +  data[1].img2 + "' />");
-                                $(".respuesta2").val( data[1].respuesta);
-                                var pregunta2 = new Pregunta();
-                                pregunta2.directo(data[1].img1,data[1].img2, data[1].audio, data[1].respuesta);
-                                preguntas.push(pregunta2);
-                            }
-                          
-                        },
-                        //si ha ocurrido un error
-                        error: function () {
-                            console.log("error");
-
+                            cont++;
                         }
-                    });*/
-               
-            },
-            //si ha ocurrido un error
-            error: function () {
-                console.log("error");
 
-            }
-        });
-        
+                    }
+                },
+                //si ha ocurrido un error
+                error: function () {
+                    console.log("error");
+
+                }
+            });
+
+
+
+
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+
+
+
 }
+//llama a las imagenes de cuentos
+function listarImagenesPreguntas(idpre, callback) {
+    var pregunt = {
+        id: idpre
+    }
+    $.ajax({
+        url: '/listarImagenesPreguntas',
+        type: 'POST',
+        data: pregunt,
+        cache: false,
+        success: function (imagenesDePreguntas) {
+            callback(imagenesDePreguntas);
 
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
 
-
-
-
+        }
+    });
+}
