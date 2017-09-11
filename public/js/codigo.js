@@ -542,10 +542,129 @@ $(document).ready(function () {
 
 
 
-
+     $("#buttonEliminar").click(function () {
+           var idcuent = $('input:text[id=deletecuento]').val();
+        alert("presiono "+ idcuent);
+        deleteCuento(idcuent);      
+    });
 
 });
 
+function deleteCuento(id) {  
+    alert("Hola eliminar cuento"+id);
+    //AQUIIIIIIII ESTABA EL ERROR
+    //var j = localStorage.getItem("var");
+    var elem = {idcuento: id}; //Variable transformada en objeto para enviarla en data
+    
+    //alert("Hola eliminar cuento mii" );
+    
+    $.ajax({
+            url: '/idPreguntaCuento',
+            type: 'POST',
+            // Form data
+            //datos del formulario
+            data: elem,
+            //necesario para subir archivos via ajax
+            cache: false,
+           
+            success: function (data) {
+               alert("miau "+data.length);
+                $.each(data, function (i, emp) {
+                     alert("idpreg "+emp.id);
+                    var elem2 = {idpreg: emp.id};
+                    $.ajax({
+                            url: '/eliminarImgPregCuento',
+                            type: 'POST',
+                            data: elem2,
+                            cache: false,
+
+                            success: function (data) {
+
+                                   alert("Se ha eliminado las imagenes cuento");
+                                //desde aqui noooooooooooooooooooooooooooooooooooooooooooo
+                                    $.ajax({
+                                        url: '/eliminarImagenesCuento',
+                                        type: 'POST',
+                                        data: elem,
+                                        cache: false,
+
+                                        success: function (data) {
+
+
+                                            alert("Se ha eliminado las imagenes");
+                                                $.ajax({
+                                                    url: '/eliminarAudiosCuento',
+                                                    type: 'POST',
+                                                    data: elem,
+                                                    cache: false,
+
+                                                    success: function (data) {
+
+                                                        alert("Se ha eliminado los audios");
+                                                                $.ajax({
+                                                                    url: '/eliminarPreguntasCuento',
+                                                                    type: 'POST',
+                                                                    data: elem,
+                                                                    cache: false,
+
+                                                                    success: function (data) {
+
+                                                                        alert("Se ha eliminado las preguntas");
+                                                                        $.ajax({
+                                                                            url: '/eliminarCuento',
+                                                                            type: 'POST',
+                                                                            data: elem,
+                                                                            cache: false,
+
+                                                                        success: function (data) {
+
+                                                                       alert("Se ha eliminado el cuento");
+
+                                                                    },
+                                                                            //si ha ocurrido un error
+                                                                            error: function () {
+                                                                                console.log("error");
+                                                                    }
+                                                                    });
+
+                                                                },
+                                                                    //si ha ocurrido un error
+                                                                    error: function () {
+                                                                        console.log("error");
+                                                                }
+                                                                });
+
+
+                                    },
+                                        //si ha ocurrido un error
+                                        error: function () {
+                                            console.log("error");
+                                    }
+                                    });
+                                        }
+
+                                    });   
+                                
+                                
+                                
+                                //desde aqui nada ---------------------------
+                            },
+                            //si ha ocurrido un error
+                            error: function () {
+                                console.log("error lalalla");
+                            }
+                    });
+                });
+            },
+            //si ha ocurrido un error
+            error: function () {
+              console.log("error tomar id cuento");
+            }
+        });
+    
+ 
+  
+};
 
 
 

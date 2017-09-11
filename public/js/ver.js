@@ -27,7 +27,7 @@ function indiceCuentos() {
             var datosid = elem.id;
             peticionImagenes(elem, function (imagen) {
                 //  alert("Pinterest amigos")
-                $("#principal").append('<li><a id=' + elem.id + '><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + imagen[0].src + '>' + elem.title + '</div></a></li>');
+                $("#principal").append('<li><a id=' + elem.id + '><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + imagen[0].src + '>' + elem.title + '<p>'+elem.id+'</p></div></li>');
 
             });
         });

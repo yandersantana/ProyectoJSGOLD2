@@ -400,5 +400,139 @@ app.get('/idPregunta', (req, res) => {
     });
 
 
+
 });
+
+
+
+app.post('/idPreguntaCuento', (req, res) => {
+    //console.log(util.inspect(req, false,null));
+    var client = new pg.Client(conString);
+    client.connect(function (err) {
+        client.query('SELECT id FROM questions WHERE stories_id= '+req.body.idcuento+';', function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+            client.end();
+            return res.json(result.rows);
+
+
+        });
+
+
+    });
+
+
+});
+
+
+
+app.post('/eliminarImgPregCuento', (req, res) => {
+    
+    var client = new pg.Client(conString);
+    
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({success: false, data: err});
+        }
+       
+        client.query('DELETE FROM imagensquestions WHERE question_id=' + req.body.idpreg + ';', function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+
+            client.end();
+            return res.json(result);
+        });
+    });
+});
+
+
+
+app.post('/eliminarCuento', (req, res) => {
+    var client = new pg.Client(conString);
+    
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({success: false, data: err});
+        }
+       
+        client.query('DELETE FROM stories WHERE id=' + req.body.idcuento + ';', function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+
+            client.end();
+            return res.json(result);
+        });
+    });
+});
+
+
+
+app.post('/eliminarImagenesCuento', (req, res) => {
+    var client = new pg.Client(conString);
+    
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({success: false, data: err});
+        }
+       
+        client.query('DELETE FROM imagens WHERE stories_id=' + req.body.idcuento + ';', function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+            
+            //console.log(result);
+            client.end();
+            return res.json(result);
+        });
+    });
+});
+
+
+app.post('/eliminarAudiosCuento', (req, res) => {
+    var client = new pg.Client(conString);
+    
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({success: false, data: err});
+        }
+       
+        client.query('DELETE FROM audios WHERE stories_id=' + req.body.idcuento + ';', function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+            
+            //console.log(result);
+            client.end();
+            return res.json(result);
+        });
+    });
+});
+
+app.post('/eliminarPreguntasCuento', (req, res) => {
+    var client = new pg.Client(conString);
+    
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({success: false, data: err});
+        }
+       
+        client.query('DELETE FROM questions WHERE stories_id=' + req.body.idcuento + ';', function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+
+            client.end();
+            return res.json(result);
+        });
+    });
+});
+
 app.listen(8080);
