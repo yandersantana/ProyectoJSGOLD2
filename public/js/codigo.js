@@ -66,7 +66,7 @@ function enviarCuento(user, callback) {
 
 
             }
-            if (user.cuento.audios != undefined) {
+            if (user.cuento.audios != undefined ) {
                 for (audio of user.cuento.audios) {
                     var audiosCuento = {
                         id: idCuento[0].id,
@@ -95,7 +95,7 @@ function enviarCuento(user, callback) {
             }
             if (user.cuento.preguntas != undefined) {
                 for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
-                    if (pregunta != undefined) {
+                    if (pregunta != undefined  && pregunta.pregunta != "") {
                         var ask = {
                             id: idCuento[0].id,
                             pregu: pregunta.pregunta,
