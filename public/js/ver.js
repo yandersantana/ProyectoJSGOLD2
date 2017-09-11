@@ -173,8 +173,11 @@ function mostrarCuento(e) {
                         //solo llama a la primera
                         $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[0].src + '  ">');
                         $("#au").empty();
-                        $("#au").append("<audio controls><source src='" + audio[0].src + "' type='audio/mpeg'></audio>");
+                        if (audio[0] != undefined) {
+                            $("#au").append("<audio controls><source src='" + audio[0].src + "' type='audio/mpeg'></audio>");
+                        }
                         var nroDePregunta = 1;
+
 
                         //cuando da click a siguiente
                         $("#siguiente").click(function () {
@@ -224,11 +227,11 @@ function mostrarCuento(e) {
 
                                 } else { //
                                     alert("fin del cuento");
-                                    
-                                   $("#siguiente").prop('disabled', true);//cuando llegue a la ultima se deshabilita el boton sgt
+
+                                    $("#siguiente").prop('disabled', true); //cuando llegue a la ultima se deshabilita el boton sgt
                                 }
                                 //audio
-                                if (nrodeAudio < audio.length) {
+                                if (nrodeAudio < audio.length && audio[nrodeAudio] != undefined) {
 
                                     $("#au").append("<audio controls><source src='" + audio[nrodeAudio].src + "' type='audio/mpeg'></audio>");
                                 }
@@ -236,13 +239,16 @@ function mostrarCuento(e) {
                         });
 
                         $("#anterior").click(function () {
-                         $("#siguiente").prop('disabled', false);//cuando llegue a la ultima se deshabilita el boton sgt
+                            $("#siguiente").prop('disabled', false); //cuando llegue a la ultima se deshabilita el boton sgt
                             nrodeImagen = 0;
+                            nrodeAudio = 0;
                             console.log(nrodeImagen);
                             $(".col-lg-10").empty();
                             $(".col-lg-10").append('<img   alt=" " class="img-responsive" src="' + imagen[0].src + '  ">');
                             $("#au").empty();
-                            $("#au").append("<audio controls><source src='" + audio[0].src + "' type='audio/mpeg'></audio>");
+                            if (audio[0] != undefined) {
+                                $("#au").append("<audio controls><source src='" + audio[0].src + "' type='audio/mpeg'></audio>");
+                            }
                         });
 
                     });
