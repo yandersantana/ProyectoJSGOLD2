@@ -167,12 +167,13 @@ function enviarCuento(user, callback) {
 
 }
 
-function actualizaImagenesEnviar(imagen, imaAactualizar) {
+//manda el src ha actualizar
 
-
+function actualizaImagenesEnviar(imaAactualizar, imagen) {
+    console.log("entrelala");
     var imagenesCuento = {
         id: imagen.id,
-        src: imaAactualizar.src
+        src: imaAactualizar
     }
 
     $.ajax({ //vamos guardando las imagenes del cuento
@@ -195,7 +196,7 @@ function actualizaImagenesEnviar(imagen, imaAactualizar) {
 function enviarActualizar(user, callback) {
     // var datos = "";
     var cuentero = {
-        id: user.usuario,
+        id: user.usuario, //traigo el id
         titulo: user.cuento.titulo,
         credito: user.cuento.creditos,
         descripcion: user.cuento.descripcion
@@ -221,13 +222,17 @@ function enviarActualizar(user, callback) {
         data: cuentero,
         cache: false,
         success: function (imagens) { //obtenemos las imagenes que pertenezcan a nuestro cuento
-            for (imaAactualizar of user.cuento.imagenes) {
-                for ( imagen of imagens) {
-                    actualizaImagenesEnviar(imaAactualizar, imagen);
-                }
+            var c = 0;
+
+            for (imagen of imagens) {
+                console.log(imagen);
+                var aux=user.cuento.imagenes[c].src;
+                 c++;
+                    actualizaImagenesEnviar(aux,imagen);
+                
             }
-           
-             
+
+
         },
         //si ha ocurrido un error
         error: function () {
@@ -462,12 +467,15 @@ $(document).ready(function () {
 
     $("#botonActualizar").click(function () {
         var cue = "";
+        cuentosIm.splice();
+        cuentosAu.splice();
 
         $(".hojas img").each(function () {
             AgrImg = ($(this).attr('src'));
             item = {};
             item["src"] = AgrImg;
             cuentosIm.push(item);
+
         });
 
 
@@ -493,9 +501,6 @@ $(document).ready(function () {
         cuento2.constru(title, des, cre, cuentosIm, cuentosAu, ArrPreg);
         var idcue = localStorage.getItem("var");
         var usuario = new Usuario(idcue, cuento2); //creo el usuario
-
-        //usuario.cuentos.push(cuento2);
-        console.log("aqui pase un rato xxx2" + usuario);
 
         enviarActualizar(usuario, function (valio) { //envio la peticion
             if (valio == "Guardado") { //si lo guardo

@@ -313,8 +313,8 @@ app.post('/guardarImagenesActualizadas', (req, res) => {
                 data: err
             });
         }
-
-        client.query("UPDATE imagens SET src='"+req.body.src+"', id='"+req.body.id+"';", function (err, result) {
+console.log(req.body.src);
+        client.query("UPDATE imagens SET src='"+req.body.src+"' WHERE id='" + req.body.id + "';", function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }
