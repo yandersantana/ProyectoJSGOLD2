@@ -110,6 +110,7 @@ app.get('/cargar', (req, res, next) => {
 });
 
 
+
 app.post('/imagenes', (req, res) => {
     var client = new pg.Client(conString);
     var id = req.body.id;
@@ -255,6 +256,34 @@ app.post('/guardarCuento', (req, res) => {
 
 });
 
+app.post('/guardarCuentoActualizar', (req, res) => {
+    var client = new pg.Client(conString);
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({
+                success: false,
+                data: err
+            });
+        }
+
+        client.query("UPDATE stories SET title='"+req.body.titulo+"', credits='"+req.body.credito+"', description='"+req.body.descripcion+"' WHERE id='" + req.body.id + "';",function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+
+            //console.log(result);
+            client.end();
+            return res.json(result.rows);
+
+
+        });
+
+    });
+
+
+});
+
 app.get('/idCuento', (req, res) => {
     var client = new pg.Client(conString);
     client.connect(function (err) {
@@ -268,6 +297,33 @@ app.get('/idCuento', (req, res) => {
 
         });
 
+
+    });
+
+
+});
+
+app.post('/guardarImagenesActualizadas', (req, res) => {
+    var client = new pg.Client(conString);
+    client.connect(function (err) {
+        if (err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({
+                success: false,
+                data: err
+            });
+        }
+
+        client.query("UPDATE imagens SET src='"+req.body.src+"', id='"+req.body.id+"';", function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+
+            client.end();
+            return res.json(result.rows);
+
+
+        });
 
     });
 

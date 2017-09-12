@@ -167,6 +167,80 @@ function enviarCuento(user, callback) {
 
 }
 
+function actualizaImagenesEnviar(imagen, imaAactualizar) {
+
+
+    var imagenesCuento = {
+        id: imagen.id,
+        src: imaAactualizar.src
+    }
+
+    $.ajax({ //vamos guardando las imagenes del cuento
+        url: '/guardarImagenesActualizadas',
+        type: 'POST',
+        data: imagenesCuento,
+        cache: false,
+        success: function (data) {
+
+
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+}
+
+function enviarActualizar(user, callback) {
+    // var datos = "";
+    var cuentero = {
+        id: user.usuario,
+        titulo: user.cuento.titulo,
+        credito: user.cuento.creditos,
+        descripcion: user.cuento.descripcion
+    }
+    $.ajax({
+        url: '/guardarCuentoActualizar',
+        type: 'POST',
+        data: cuentero,
+        cache: false,
+        success: function (data) {
+
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+
+    $.ajax({
+        url: '/imagenes',
+        type: 'POST',
+        data: cuentero,
+        cache: false,
+        success: function (imagens) { //obtenemos las imagenes que pertenezcan a nuestro cuento
+            for (imaAactualizar of user.cuento.imagenes) {
+                for ( imagen of imagens) {
+                    actualizaImagenesEnviar(imaAactualizar, imagen);
+                }
+            }
+           
+             
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+
+    callback("Guardado");
+
+
+}
+
 
 class Usuario {
 
@@ -382,26 +456,60 @@ $(document).ready(function () {
 
         });
 
-        //  var cue = JSON.stringify(usuarios);
-
-        /*   $.ajax({
-               url: '../php/writeJson.php',
-               method: 'post',
-               data: {
-                   "identificador": cue
-               },
-               success: function (data) {
-                   alert(data);
-
-               }
-           });*/
-
-
 
 
     });
 
+    $("#botonActualizar").click(function () {
+        var cue = "";
 
+        $(".hojas img").each(function () {
+            AgrImg = ($(this).attr('src'));
+            item = {};
+            item["src"] = AgrImg;
+            cuentosIm.push(item);
+        });
+
+
+        $(".HojAud audio").each(function () {
+            AgrAud = ($(this).children().attr('src'));
+            item = {};
+            item["src"] = AgrAud;
+            cuentosAu.push(item);
+        });
+
+        // var usuarios=[];
+        //var cuento= crearCuento();
+
+
+
+        var cuento2 = new Cuento();
+
+        var title = $('input:text[name=fname]').val();
+        var des = $('input:text[name=fdescripcion]').val();
+        var cre = $('input:text[name=fcreditos]').val();
+        guardarPreguntas();
+
+        cuento2.constru(title, des, cre, cuentosIm, cuentosAu, ArrPreg);
+        var idcue = localStorage.getItem("var");
+        var usuario = new Usuario(idcue, cuento2); //creo el usuario
+
+        //usuario.cuentos.push(cuento2);
+        console.log("aqui pase un rato xxx2" + usuario);
+
+        enviarActualizar(usuario, function (valio) { //envio la peticion
+            if (valio == "Guardado") { //si lo guardo
+                alert("Cuento Actualizado Amiguito");
+            } else { //si  no lo guardo
+                alert("Cuento No Guardado");
+            }
+
+
+        });
+
+
+
+    });
     //++++++++++++++++++++++++++++++++++++++++++++++Subir Imagenes++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     //Agregar imagenes al contenedor
@@ -921,7 +1029,7 @@ function editarCuento() {
 
                                             $("#ImP1").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
                                         } else if (srcimagen != undefined && rec == 1) {
-                                             rec++;
+                                            rec++;
                                             $("#ImP2").empty(); // vaciar los contenedores en el caso que este lleno
 
                                             $("#ImP2").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
@@ -940,7 +1048,7 @@ function editarCuento() {
                             } else if (p != undefined && cont == 2) {
                                 $('input:text[name=preg2]').val(p.question);
                                 $('input:text[name=resp2]').val(p.answer);
-                                  listarImagenesPreguntas(p.id, function (imagenesExtraidasPregunta) { //envio la peticion
+                                listarImagenesPreguntas(p.id, function (imagenesExtraidasPregunta) { //envio la peticion
                                     var rec = 0;
                                     for (srcimagen of imagenesExtraidasPregunta) {
 
@@ -950,10 +1058,10 @@ function editarCuento() {
 
                                             $("#ImP4").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
                                         } else if (srcimagen != undefined && rec == 1) {
-                                             rec++;
+                                            rec++;
                                             $("#ImP5").empty(); // vaciar los contenedores en el caso que este lleno
-                                            
-                                            
+
+
 
                                             $("#ImP5").append("<img src=" + srcimagen.src + ">"); //agrego la imagen a la pagina en miniatura.
 
