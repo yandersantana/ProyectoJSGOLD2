@@ -450,7 +450,6 @@ function enviarActualizar(user, callback) {
         //si ha ocurrido un error
         error: function () {
             console.log("error");
-
         }
     });*/
 
@@ -903,7 +902,7 @@ function deleteCuento(id) {
         cache: false,
 
         success: function (data) {
-            alert("miau " + data.length);
+            alert("miau www" + data.length);
             $.each(data, function (i, emp) {
                 alert("idpreg " + emp.id);
                 var elem2 = {
