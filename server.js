@@ -75,7 +75,8 @@ app.post('/subir', (req, res) => {
 
 
 const pg = require('pg');
-var conString = "postgres://postgres:postgres@localhost:5432/GoldTales";
+pg.defaults.ssl=true;
+var conString = "postgres://cvhyoalkzzgrxz:e4ce6729ccb65ceebf73fa431526a000e6cd291220b70edba20806cbef8320f2@ec2-23-21-197-175.compute-1.amazonaws.com:5432/GoldTales";
 
 app.use(parser.json()); // for parsing application/json
 app.use(parser.urlencoded({
