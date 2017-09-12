@@ -267,7 +267,7 @@ app.post('/guardarCuentoActualizar', (req, res) => {
             });
         }
 
-        client.query("UPDATE stories SET title='"+req.body.titulo+"', credits='"+req.body.credito+"', description='"+req.body.descripcion+"' WHERE id='" + req.body.id + "';",function (err, result) {
+        client.query("UPDATE stories SET title='"+req.body.titulo+"', credits='"+req.body.credito+"', description='"+req.body.descripcion+"' WHERE id='" + req.body.idcuento + "';",function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }
@@ -313,8 +313,8 @@ app.post('/guardarImagenesActualizadas', (req, res) => {
                 data: err
             });
         }
-console.log(req.body.src);
-        client.query("UPDATE imagens SET src='"+req.body.src+"' WHERE id='" + req.body.id + "';", function (err, result) {
+
+        client.query("UPDATE imagens SET src='"+req.body.src+"', id='"+req.body.id+"';", function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }
