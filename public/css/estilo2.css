@@ -349,6 +349,30 @@
     text-align: center
 }
 
+.contenedorli3{
+    width: 189px;
+    height: 189px;
+    right: 30px;
+    top: -6px;
+    background: url(../imagenes/usuario.png)no-repeat;
+    background-position: top;
+    background-size: 60%;
+}
+
+.contenedorli4{
+    width: 189px;
+    height: 189px;
+    right: 30px;
+    top: -6px;
+    background: url(../imagenes/newuser.png)no-repeat;
+    background-position: top;
+    background-size: 60%;
+}
+
+
+
+
+
 ul {
     list-style-type: none;
     margin: 0;
@@ -378,4 +402,54 @@ li a {
 li a:hover {
     text-decoration: none;
     color: black
+}
+
+.btnVer{
+    width: 60%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+.centrado{
+    text-align: center;
+    color: blue;
+}
+
+.usuarios img{
+    margin: 0 auto;
+    display: block;
+}
+
+.usuarios{
+    background-color: #CEF6CE;
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    margin: 5px;
+    float: left;
+}
+
+.userCuent{
+    width: 60%;
+    margin: 0 auto;
+     background-color: #CEF6CE;
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+}
+
+.row2{
+    width: 70%;
+    margin: 0 auto;
+    display: block;
+}
+
+
+.btn button{
+    font-size: 14pt;
+    color: blue;
+}
+
+.btn{
+    margin: 0 auto;
+    display: block;
 }

@@ -167,6 +167,54 @@ function enviarCuento(user, callback) {
 
 }
 
+function enviarUsuario(user,callback){
+     var usuario= {
+       name: user.name,
+       username: user.username  
+    }
+      $.ajax({
+        url: '/guardarUsuario',
+        type: 'POST',
+        data: usuario,
+        cache: false,
+        success: function (data) {
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+    callback("Guardado");
+}
+
+
+function enviarActualizarUsuario(user,callback){
+    var id = localStorage.getItem("var");
+    var usuario= {
+        idusuario:id,
+       name: user.name,
+       username: user.username  
+    }
+    console.log("ESTOY ENVIANDO"+usuario.idusuario+usuario.name+usuario.username);
+    $.ajax({ //vamos guardando las imagenes del cuento
+        url: '/guardarUsuarioActualizado',
+        type: 'POST',
+        data: usuario,
+        cache: false,
+        success: function (data) {
+            
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+    callback("Actualizado");
+}
+
+
 function actualizaImagenesEnviar(imagen, imaAactualizar) {
 
 
@@ -191,6 +239,10 @@ function actualizaImagenesEnviar(imagen, imaAactualizar) {
         }
     });
 }
+
+
+
+
 
 function enviarActualizar(user, callback) {
     // var datos = "";
@@ -433,26 +485,6 @@ function enviarActualizar(user, callback) {
         }
     });
 
-   /* $.ajax({
-        url: '/imagenes',
-        type: 'POST',
-        data: cuentero,
-        cache: false,
-        success: function (imagens) { //obtenemos las imagenes que pertenezcan a nuestro cuento
-            for (imaAactualizar of user.cuento.imagenes) {
-                for ( imagen of imagens) {
-                    actualizaImagenesEnviar(imaAactualizar, imagen);
-                }
-            }
-           
-             
-        },
-        //si ha ocurrido un error
-        error: function () {
-            console.log("error");
-        }
-    });*/
-
     callback("Guardado");
 
 
@@ -464,6 +496,11 @@ class Usuario {
     constructor(user, cuento) {
         this.usuario = user;
         this.cuento = cuento;
+    }
+    
+    constru(name,username){
+        this.name=name;
+        this.username=username;
     }
 }
 
@@ -553,9 +590,8 @@ function crearCuento() {
 $(document).ready(function () {
     //  cuentosPorDefault();
     cargar();
-
     ActivarDroppablePreguntas();
-
+    
 
     //Ocultamos el contenedor de preguntas
     $(".contPreguntas").hide();
@@ -645,11 +681,6 @@ $(document).ready(function () {
             cuentosAu.push(item);
         });
 
-        // var usuarios=[];
-        //var cuento= crearCuento();
-
-
-
         var cuento2 = new Cuento();
 
         var title = $('input:text[name=fname]').val();
@@ -660,7 +691,6 @@ $(document).ready(function () {
         cuento2.constru(title, des, cre, cuentosIm, cuentosAu, ArrPreg);
         var usuario = new Usuario(1, cuento2); //creo el usuario
 
-        //usuario.cuentos.push(cuento2);
         console.log("aqui pase un rato xxx2" + usuario);
 
         enviarCuento(usuario, function (valio) { //envio la peticion
@@ -669,13 +699,27 @@ $(document).ready(function () {
             } else { //si  no lo guardo
                 alert("Cuento No Guardado");
             }
-
-
         });
-
-
-
-    });
+    }); 
+    
+    
+     $(".btnSave").click(function () {
+         var user= new Usuario();
+         var name=$('input:text[name=fname]').val();
+         var username=$('input:text[name=fusername]').val();
+         
+         user.constru(name,username);
+         console.log("estoyyy"+user.name);
+         enviarUsuario(user, function(valio){
+            if (valio == "Guardado") { //si lo guardo
+                alert("Usuario Guardado");
+                 window.location = "/verUsuarios";
+            } else { //si  no lo guardo
+                alert("Usuario No Guardado");
+            } 
+         })
+     });
+    
 
     $("#botonActualizar").click(function () {
         var cue = "";
@@ -879,6 +923,34 @@ $(document).ready(function () {
         alert("presiono " + idcuent);
         enviarEditar(idcuent);
     });
+    
+     $("#btnActualizarUser").click(function () {
+        var user= new Usuario();
+         var name=$('input:text[name=fname]').val();
+         var username=$('input:text[name=fusername]').val();
+         
+         user.constru(name,username);
+        
+         enviarActualizarUsuario(user, function(valio){
+            if (valio == "Actualizado") { //si lo guardo
+                alert("Usuario Actualizado");
+                 window.location = "/verUsuarios";
+            } else { //si  no lo guardo
+                alert("Usuario No Guardado");
+            } 
+         })
+    });
+    
+    $("#btnEliminarUser").click(function () {
+        var idcuent = $('input:text[id=editcuento]').val();
+        alert("presiono " );
+       // enviarEditar(idcuent);
+    });
+  
+    
+    
+    
+ 
 
 });
 
@@ -1144,6 +1216,39 @@ function enviarEditar(id) {
     window.location = "/editarCuento";
 };
 
+function enviarVerUsuario(id) {
+    //alert("recibie l nombre" + nombre);
+    localStorage.setItem("var", id);
+    window.location = "/Usuario";
+};
+
+function cargarUsuario(){
+     var user = localStorage.getItem("var");
+    var elem = {
+        iduser: user
+    }
+    
+    $.ajax({
+        url: '/cargarUsuarioPorId',
+        type: 'POST',
+        data: elem,
+        cache: false,
+
+        success: function (data) {
+            $('input:text[name=fname]').val(data[0].name);
+            $('input:text[name=fusername]').val(data[0].username);
+
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+    
+    
+}
+
 
 
 function editarCuento() {
@@ -1339,3 +1444,55 @@ function listarImagenesPreguntas(idpre, callback) {
         }
     });
 }
+
+
+
+function peticionUsuarios(callback) {
+    var datos = "";
+    $.ajax({
+        url: '/usuarios',
+        type: 'GET',
+
+        cache: false,
+        contentType: false,
+        processData: false,
+
+        success: function (data) {
+            datos = data;
+            callback(datos);
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+
+}
+
+
+
+function indiceUsuarios() {
+    $(".contPrincipal").empty();
+    peticionUsuarios(function (result) {
+        $.each(result, function (index, elem) {
+           
+            console.log("usuario"+elem.name);
+            var datosid = elem.id;
+            $(".contPrincipal").append('<div class=" col-md-4 usuarios">\
+                    <h2 class="centrado">'+elem.name+'</h2>\
+                    <img src="../imagenes/usuario.png" alt="usuario">\
+                   <button id="'+elem.id+'" class="btnVer">VER</button><br>\
+                </div>');
+        });
+        cargarboton();
+    });
+} 
+
+function cargarboton(){  
+     $(".btnVer").click(function () {
+        var idUser = $(this).attr('id');       
+        enviarVerUsuario(idUser);
+    });
+}
+
