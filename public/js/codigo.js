@@ -215,6 +215,30 @@ function enviarActualizarUsuario(user,callback){
 }
 
 
+function enviarEliminarUsuario(callback){
+    var id = localStorage.getItem("var");
+    alert("el usuario a eliminar es "+id);
+    var usuario= {
+        idusuario:id
+    }
+    $.ajax({ //vamos guardando las imagenes del cuento
+        url: '/eliminarUsuario',
+        type: 'POST',
+        data: usuario,
+        cache: false,
+        success: function (data) {
+            
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+    callback("Eliminado");
+}
+
+
 function actualizaImagenesEnviar(imagen, imaAactualizar) {
 
 
@@ -942,9 +966,15 @@ $(document).ready(function () {
     });
     
     $("#btnEliminarUser").click(function () {
-        var idcuent = $('input:text[id=editcuento]').val();
         alert("presiono " );
-       // enviarEditar(idcuent);
+        enviarEliminarUsuario(function(valio){
+            if (valio == "Eliminado") { //si lo guardo
+                alert("Usuario Eliminado");
+                 window.location = "/verUsuarios";
+            } else { //si  no lo guardo
+                alert("Usuario No Eliminado");
+            } 
+         })
     });
   
     
