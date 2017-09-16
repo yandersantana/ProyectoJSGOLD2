@@ -41,6 +41,8 @@ function enviarCuento(user, callback) {
         type: 'GET',
         cache: false,
         success: function (idCuento) { //obtenemos el ultimo id del cuento guardado
+            $(this).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
+            console.log(idCuento[0].id);
             for (imagen of user.cuento.imagenes) {
 
                 var imagenesCuento = {
@@ -97,6 +99,7 @@ function enviarCuento(user, callback) {
             if (user.cuento.preguntas != undefined) {
                 for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
                     if (pregunta != undefined && pregunta.pregunta != "") {
+                         $(this).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
                         var ask = {
                             id: idCuento[0].id + 1,
                             pregu: pregunta.pregunta,
@@ -115,12 +118,16 @@ function enviarCuento(user, callback) {
 
                             }
                         });
+                        
+                        $(this).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
                         var preguntaCopiada = pregunta;
                         $.ajax({
                             url: '/idPregunta',
                             type: 'GET',
                             cache: false,
                             success: function (idPregunta) { //obtenemos el ultimo id de la pregunta guardada
+                                
+                                $(this).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
                                 for (imagen of preguntaCopiada.imagens) {
                                     console.log(imagen.src);
                                     console.log(idPregunta[0].id);
@@ -749,7 +756,7 @@ $(document).ready(function () {
                         if (valio == "Guardado") { //si lo guardo
                             alert("Cuento Guardado Amiguito"+" Usuario: "+us.username+" Nombre: "+us.name);
                            
-                            location.reload();
+                            //location.reload();
                         }
                     });
                 }
