@@ -86,6 +86,9 @@ const pg = require('pg');
 pg.defaults.ssl=true;
 var conString = "postgres://cvhyoalkzzgrxz:e4ce6729ccb65ceebf73fa431526a000e6cd291220b70edba20806cbef8320f2@ec2-23-21-197-175.compute-1.amazonaws.com:5432/ddl5ce18ndka9t";
 
+
+//var conString = "postgres://postgres:postgres@localhost:5432/GoldTales";
+
 app.use(parser.json()); // for parsing application/json
 app.use(parser.urlencoded({
     extended: true
@@ -275,7 +278,7 @@ app.post('/guardarCuento', (req, res) => {
             });
         }
 
-        client.query("INSERT INTO  stories  (title,  description ,  credits ,  user_id) VALUES ('" + req.body.titulo + "', '" + req.body.descripcion + "', '" + req.body.credito + "', 1);", function (err, result) {
+        client.query("INSERT INTO  stories  (title,  description ,  credits ,  user_id) VALUES ('" + req.body.titulo + "', '" + req.body.descripcion + "', '" + req.body.credito + "', '" + req.body.id_user + "');", function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }
@@ -733,6 +736,31 @@ app.post('/cargarUsuarioPorId', (req, res) => {
    
 });
 
+app.get('/existeUsuario', (req, res) => {
+    var client = new pg.Client(conString);
+    console.log(req.body.username);
+    client.connect(function(err) {
+        if(err) {
+            return console.error('could not connect to postgres', err);
+            return res.status(500).json({success: false, data: err});
+        }
+       
+        client.query('SELECT * FROM users ;', function(err, result) {
+            if(err) {
+                return console.error('error running query', err);
+            }
+            
+            //console.log(result);
+            client.end();
+            return res.json(result.rows);
+            
+           
+        });
+        
+    });
+    
+   
+});
 
 app.post('/eliminarUsuario', (req, res) => {
     var client = new pg.Client(conString);

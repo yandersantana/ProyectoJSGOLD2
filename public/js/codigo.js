@@ -14,6 +14,7 @@ var idCuento = 5;
 function enviarCuento(user, callback) {
     // var datos = "";
     var cuentero = {
+        id_user: user.id,
         titulo: user.cuento.titulo,
         credito: user.cuento.creditos,
         descripcion: user.cuento.descripcion
@@ -188,6 +189,24 @@ function enviarUsuario(user,callback){
     callback("Guardado");
 }
 
+function existeUsuario(user, callback) {
+    $.ajax({
+        url: '/existeUsuario',
+        type: 'GET',
+        cache: false,
+        success: function (data) {
+            callback(data);
+        },
+
+        error: function () {
+
+            console.log("error");
+
+        }
+    });
+
+
+}
 
 function enviarActualizarUsuario(user,callback){
     var id = localStorage.getItem("var");
@@ -517,8 +536,12 @@ function enviarActualizar(user, callback) {
 
 class Usuario {
 
-    constructor(user, cuento) {
+    /*constructor(user, cuento) {
         this.usuario = user;
+        this.cuento = cuento;
+    }*/
+     constructor(idUser, cuento) {
+        this.id = idUser;
         this.cuento = cuento;
     }
     
@@ -710,19 +733,33 @@ $(document).ready(function () {
         var title = $('input:text[name=fname]').val();
         var des = $('input:text[name=fdescripcion]').val();
         var cre = $('input:text[name=fcreditos]').val();
+        var userInput = $('input:text[name=fusuario]').val();
         guardarPreguntas();
 
         cuento2.constru(title, des, cre, cuentosIm, cuentosAu, ArrPreg);
-        var usuario = new Usuario(1, cuento2); //creo el usuario
+        existeUsuario(userInput, function (existe) { //pregunto primero si el usuario existe
+            var c = 0; //controlar los usuarios
+            var encontro = false;
+            for (us of existe) {
+                c++;
+                if (us.username == userInput) {
+                    encontro = true;
+                    var usuario = new Usuario(us.id, cuento2);
+                    enviarCuento(usuario, function (valio) { //envio la peticion
+                        if (valio == "Guardado") { //si lo guardo
+                            alert("Cuento Guardado Amiguito"+" Usuario: "+us.username+" Nombre: "+us.name);
+                           
+                            location.reload();
+                        }
+                    });
+                }
 
-        console.log("aqui pase un rato xxx2" + usuario);
-
-        enviarCuento(usuario, function (valio) { //envio la peticion
-            if (valio == "Guardado") { //si lo guardo
-                alert("Cuento Guardado Amiguito");
-            } else { //si  no lo guardo
-                alert("Cuento No Guardado");
             }
+            if (encontro == false) { //si lo guardo
+                alert("Sorry :c Amiguito, Usuario No encontrado");
+                 location.reload();
+            }
+
         });
     }); 
     
