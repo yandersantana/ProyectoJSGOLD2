@@ -2,7 +2,8 @@ var v;
 var controladorImagenes = 0;
 //ver todos los cuentos que hay
 function escribirPreguntas(pregunta, imagenes, respuesta) {
-    console.log("soy imagenes"+imagenes[0].src+imagenes[1].src +imagenes[2].src  )
+
+    console.log("soy imagenes" + imagenes[0].src + imagenes[1].src + imagenes[2].src)
     $("#validacion").append('<div class="container"><h1>' + pregunta + '</h1><div class="row"><div class="col-lg-3"><a id="1"><img   alt=" " class="img-responsive" src="' + imagenes[0].src + '  "></a></div><div class="col-lg-3"><a id="2"><img   alt=" " class="img-responsive" src="' + imagenes[1].src + '  "></a></div><div class="col-lg-3"><a id="3"><img   alt=" " class="img-responsive" src="' + imagenes[2].src + '  "></a></div></div></div>');
 
     $('body').on('click', '#validacion a', function () {
@@ -22,17 +23,21 @@ function indiceCuentos() {
     peticionCuentos(function (result) {
 
         $.each(result, function (index, elem) {
-            var img;
+
             console.log(elem);
             var datosid = elem.id;
             peticionImagenes(elem, function (imagen) {
                 //  alert("Pinterest amigos")
-                $("#principal").append('<li><a id=' + elem.id + '><h2 class="myTitle">' + elem.title + '</h2><p class="myId">'+elem.id+'</p><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + imagen[0].src + '></div></li>');
-
+                var img = imagen[0];
+               
+                if (img != undefined) {
+                     console.log("hola soy " + imagen[0].src);
+                    $("#principal").append('<li><a id=' + elem.id + '><h2 class="myTitle">' + elem.title + '</h2><p class="myId">' + elem.id + '</p><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + imagen[0].src + '></div></li>');
+                }
             });
         });
     });
-} 
+}
 
 //ver imagenes
 function peticionImagenes(elem, callback) {
@@ -45,6 +50,7 @@ function peticionImagenes(elem, callback) {
         cache: false,
 
         success: function (data) {
+            $(this).slideUp(300).delay(2000).fadeIn(400);
             img = data;
             callback(img);
         },
@@ -67,6 +73,7 @@ function peticionImagenesPreguntas(elem, callback) {
         cache: false,
 
         success: function (data) {
+            $(this).slideUp(300).delay(2000).fadeIn(400);
             objImg = data;
             callback(objImg);
         },
@@ -89,6 +96,7 @@ function peticionPreguntas(elem, callback) {
         cache: false,
 
         success: function (data) {
+            $(this).slideUp(300).delay(2000).fadeIn(400);
             console.log(data);
             console.log(data);
             objPre = data;
@@ -113,6 +121,7 @@ function peticionAudios(elem, callback) {
         cache: false,
 
         success: function (data) {
+            $(this).slideUp(300).delay(2000).fadeIn(400);
             console.log(data);
             console.log(data);
             audio = data;
@@ -138,6 +147,7 @@ function peticionCuentos(callback) {
         processData: false,
 
         success: function (data) {
+            $(this).slideUp(300).delay(2000).fadeIn(400);
             datos = data;
             console.log("holaaa" + datos);
             callback(datos);
@@ -189,7 +199,7 @@ function mostrarCuento(e) {
                                 peticionPreguntas(elem, function (pre) {
                                     if (pre[0] != undefined) { //si existen preguntas
                                         peticionImagenesPreguntas(pre[0], function (imPreg) {
-                                            if (imPreg != undefined) { //si hay imagenes de las preguntas
+                                                if(imPreg[0] != undefined && imPreg[1] != undefined && imPreg[2] != undefined){//si hay imagenes de las preguntas
                                                 escribirPreguntas(pre[0].question, imPreg, pre[0].answer); //llama a la funcion 
 
                                             }
