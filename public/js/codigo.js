@@ -41,7 +41,7 @@ function enviarCuento(user, callback) {
         type: 'GET',
         cache: false,
         success: function (idCuento) { //obtenemos el ultimo id del cuento guardado
-            $(this).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
+            $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
             console.log(idCuento[0].id);
             for (imagen of user.cuento.imagenes) {
 
@@ -99,7 +99,7 @@ function enviarCuento(user, callback) {
             if (user.cuento.preguntas != undefined) {
                 for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
                     if (pregunta != undefined && pregunta.pregunta != "") {
-                         $(this).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
+                         $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                         var ask = {
                             id: idCuento[0].id + 1,
                             pregu: pregunta.pregunta,
@@ -119,7 +119,7 @@ function enviarCuento(user, callback) {
                             }
                         });
                         
-                        $(this).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
+                        $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                         var preguntaCopiada = pregunta;
                         $.ajax({
                             url: '/idPregunta',
@@ -127,7 +127,7 @@ function enviarCuento(user, callback) {
                             cache: false,
                             success: function (idPregunta) { //obtenemos el ultimo id de la pregunta guardada
                                 
-                                $(this).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
+                                $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                 for (imagen of preguntaCopiada.imagens) {
                                     console.log(imagen.src);
                                     console.log(idPregunta[0].id);
@@ -169,7 +169,7 @@ function enviarCuento(user, callback) {
 
         }
     });
-
+     $(this).slideUp( 300 ).delay( 8000 ).fadeIn( 400 );
     callback("Guardado");
 
 
@@ -296,20 +296,25 @@ function actualizaImagenesEnviar(imagen, imaAactualizar) {
 
 function enviarActualizar(user, callback) {
     // var datos = "";
+    var idcue = localStorage.getItem("var");
     var cuentero = {
-        idcuento: user.usuario,
+        idcuento: idcue,
         imagenes: user.cuento.imagenes,
+        audios:user.cuento.audios,
         titulo: user.cuento.titulo,
         credito: user.cuento.creditos,
         descripcion: user.cuento.descripcion
     }
+     $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
+    /*alert(cuentero.imagenes);
+    alert(cuentero.audios);*/
     $.ajax({
         url: '/guardarCuentoActualizar',
         type: 'POST',
         data: cuentero,
         cache: false,
         success: function (data) {
-             
+            $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
              $.ajax({
                     url: '/idPreguntaCuento',
                     type: 'POST',
@@ -320,9 +325,11 @@ function enviarActualizar(user, callback) {
                     cache: false,
 
                     success: function (data) {
-                        alert("miau " + data.length);
+                         $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
+                        //alert("miau " + data.length);
                         $.each(data, function (i, emp) {
-                            alert("idpreg " + emp.id);
+                            $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
+                            //alert("idpreg " + emp.id);
                             var elem2 = {
                                 idpreg: emp.id
                             };
@@ -334,8 +341,9 @@ function enviarActualizar(user, callback) {
 
                                 success: function (data) {
 
-                                    alert("Se ha eliminado las imagenes cuento");
+                                    //alert("Se ha eliminado las imagenes cuento");
                                     //desde aqui noooooooooooooooooooooooooooooooooooooooooooo
+                                      $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                     $.ajax({
                                         url: '/eliminarImagenesCuento',
                                         type: 'POST',
@@ -345,7 +353,8 @@ function enviarActualizar(user, callback) {
                                         success: function (data) {
 
 
-                                            alert("Se ha eliminado las imagenes");
+                                            //alert("Se ha eliminado las imagenes");
+                                              $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                             $.ajax({
                                                 url: '/eliminarAudiosCuento',
                                                 type: 'POST',
@@ -354,7 +363,8 @@ function enviarActualizar(user, callback) {
 
                                                 success: function (data) {
 
-                                                    alert("Se ha eliminado los audios");
+                                                    //alert("Se ha eliminado los audios");
+                                                      $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                                     $.ajax({
                                                         url: '/eliminarPreguntasCuento',
                                                         type: 'POST',
@@ -363,18 +373,18 @@ function enviarActualizar(user, callback) {
 
                                                         success: function (data) {
 
-                                                            alert("Se ha eliminado las preguntas");
-                                                            
+                                                            //alert("Se ha eliminado las preguntas");
+                                                              $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                                             
                                                             
                                                             for (imagen of user.cuento.imagenes) {
 
                                                                 var imagenesCuento = {
-                                                                    id: user.usuario,
+                                                                    id: cuentero.idcuento,
                                                                     src: imagen.src
                                                                 }
-
-                                                               
+                                                                //alert("idprimerainmagn"+imagenesCuento.id);
+                                                                 $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                                                 $.ajax({ //vamos guardando las imagenes del cuento
                                                                     url: '/guardarImagenes',
                                                                     type: 'POST',
@@ -393,11 +403,11 @@ function enviarActualizar(user, callback) {
 
 
                                                             }
-                                                            
+                                                             $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                                             if (user.cuento.audios != undefined) {
                                                                 for (audio of user.cuento.audios) {
                                                                     var audiosCuento = {
-                                                                        id: user.usuario,
+                                                                        id: cuentero.idcuento,
                                                                         src: audio.src
                                                                     }
 
@@ -421,11 +431,13 @@ function enviarActualizar(user, callback) {
 
                                                                 }
                                                             }
+                                                             $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                                             if (user.cuento.preguntas != undefined) {
                                                                 for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
+                                                                     $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                                                     if (pregunta != undefined && pregunta.pregunta != "") {
                                                                         var ask = {
-                                                                            id: user.usuario,
+                                                                            id: cuentero.idcuento,
                                                                             pregu: pregunta.pregunta,
                                                                             respu: pregunta.respuesta
                                                                         }
@@ -443,16 +455,18 @@ function enviarActualizar(user, callback) {
                                                                             }
                                                                         });
                                                                         var preguntaCopiada = pregunta;
+                                                                         $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                                                         $.ajax({
                                                                             url: '/idPregunta',
                                                                             type: 'GET',
                                                                             cache: false,
                                                                             success: function (idPregunta) { //obtenemos el ultimo id de la pregunta guardada
+                                                                                 $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                                                                                 for (imagen of preguntaCopiada.imagens) {
                                                                                     console.log(imagen.src);
                                                                                     console.log(idPregunta[0].id);
                                                                                     var imagenesPregunta = {
-                                                                                        id: user.usuario,
+                                                                                        id: cuentero.idcuento,
                                                                                         src: imagen.src
                                                                                     }
 
@@ -754,6 +768,7 @@ $(document).ready(function () {
                     var usuario = new Usuario(us.id, cuento2);
                     enviarCuento(usuario, function (valio) { //envio la peticion
                         if (valio == "Guardado") { //si lo guardo
+                             $(this).slideUp( 300 ).delay( 8000 ).fadeIn( 400 );
                             alert("Cuento Guardado Amiguito"+" Usuario: "+us.username+" Nombre: "+us.name);
                            
                             //location.reload();
@@ -822,7 +837,7 @@ $(document).ready(function () {
         cuento2.constru(title, des, cre, cuentosIm, cuentosAu, ArrPreg);
         var idcue = localStorage.getItem("var");
         var usuario = new Usuario(idcue, cuento2); //creo el usuario
-
+        
         //usuario.cuentos.push(cuento2);
         console.log("aqui pase un rato xxx2" + usuario);
 
@@ -1285,7 +1300,7 @@ function guardarPreguntas() {
 
 
 function enviarEditar(id) {
-    alert("recibie l cuento kkk" + id);
+    //alert("recibie l cuento kkk" + id);
     localStorage.setItem("var", id);
     window.location = "/editarCuento";
 };
@@ -1332,8 +1347,9 @@ function editarCuento() {
     var elem = {
         idcuento: idcue
     }
-    alert("ceunto" + idcue);
-    alert("entro aqio");
+    /*alert("ceunto" + idcue);
+    alert("entro aqio");*/
+      $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
     $.ajax({
         url: '/cargarCuentoPorId',
         type: 'POST',
@@ -1362,13 +1378,13 @@ function editarCuento() {
 
         success: function (data) {
 
-            console.log(data);
+           /* console.log(data);
             alert(data.length);
-
-
+*/
+            $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
             $.each(data, function (index, elem) {
                 index++;
-                alert("index" + index);
+                //alert("index" + index);
                 $("#hojaBl" + index + "").empty(); // vaciar los contenedores en el caso que este lleno
                 $("#hojaBln" + index + "").append("<img src=" + elem.src + ">"); //agrego la imagen al contenedor del slider
                 $("#n" + index + "").append("<img src=" + elem.src + ">"); //agrego la imagen a la pagina en miniatura.
@@ -1400,7 +1416,7 @@ function editarCuento() {
 
                 }
             });
-
+              $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
             //listar preguntas
             $.ajax({ //vamos extrayendo la pregunta 
                 url: '/listarPreguntas',
@@ -1440,7 +1456,7 @@ function editarCuento() {
 
                                 });
 
-
+                                  $(this).slideUp( 300 ).delay( 2000 ).fadeIn( 400 );
                             } else if (p != undefined && cont == 2) {
                                 $('input:text[name=preg2]').val(p.question);
                                 $('input:text[name=resp2]').val(p.answer);
