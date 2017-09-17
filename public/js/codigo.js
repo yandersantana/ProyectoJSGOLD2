@@ -35,18 +35,18 @@ function enviarCuento(user, callback) {
 
         }
     });
-
+ $(this).slideUp(300).delay(2000).fadeIn(400);
     $.ajax({
         url: '/idCuento',
         type: 'GET',
         cache: false,
         success: function (idCuento) { //obtenemos el ultimo id del cuento guardado
             $(this).slideUp(300).delay(2000).fadeIn(400);
-            console.log(idCuento[0].id);
+            //console.log(idCuento[0].id);
             for (imagen of user.cuento.imagenes) {
 
                 var imagenesCuento = {
-                    id: idCuento[0].id + 1,
+                    id: idCuento[0].id,
                     src: imagen.src
                 }
 
@@ -69,10 +69,11 @@ function enviarCuento(user, callback) {
 
 
             }
+             $(this).slideUp(300).delay(2000).fadeIn(400);
             if (user.cuento.audios != undefined) {
                 for (audio of user.cuento.audios) {
                     var audiosCuento = {
-                        id: idCuento[0].id + 1,
+                        id: idCuento[0].id,
                         src: audio.src
                     }
 
@@ -96,12 +97,13 @@ function enviarCuento(user, callback) {
 
                 }
             }
+             $(this).slideUp(300).delay(2000).fadeIn(400);
             if (user.cuento.preguntas != undefined) {
                 for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
                     if (pregunta != undefined && pregunta.pregunta != "") {
                         $(this).slideUp(300).delay(2000).fadeIn(400);
                         var ask = {
-                            id: idCuento[0].id + 1,
+                            id: idCuento[0].id,
                             pregu: pregunta.pregunta,
                             respu: pregunta.respuesta
                         }
@@ -132,7 +134,7 @@ function enviarCuento(user, callback) {
                                     console.log(imagen.src);
                                     console.log(idPregunta[0].id);
                                     var imagenesPregunta = {
-                                        id: idPregunta[0].id + 1,
+                                        id: idPregunta[0].id,
                                         src: imagen.src
                                     }
 
@@ -1066,7 +1068,8 @@ function deleteCuento(id) {
              $(this).slideUp(300).delay(2000).fadeIn(400);
             if (data != undefined) { //si existe preguntas que borrar
                 $.each(data, function (i, emp) {
-                    alert("idpreg " + emp.id);
+                    $(this).slideUp(300).delay(2000).fadeIn(400);
+                   // alert("idpreg " + emp.id);
                     var elem2 = {
                         idpreg: emp.id
                     };
@@ -1079,6 +1082,7 @@ function deleteCuento(id) {
                         success: function (data) {
                             $(this).slideUp(300).delay(2000).fadeIn(400);
                             //elimina la pregunta
+                            console.log("soy yd cuento "+elem.idcuento);
                             $.ajax({
                                 url: '/eliminarPreguntasCuento',
                                 type: 'POST',
