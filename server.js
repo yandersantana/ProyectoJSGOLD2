@@ -558,7 +558,7 @@ app.post('/idPreguntaCuento', (req, res) => {
     //console.log(util.inspect(req, false,null));
     var client = new pg.Client(conString);
     client.connect(function (err) {
-        client.query('SELECT id FROM questions WHERE stories_id= '+req.body.idcuento+';', function (err, result) {
+        client.query('SELECT * FROM questions WHERE stories_id= '+req.body.idcuento+';', function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }

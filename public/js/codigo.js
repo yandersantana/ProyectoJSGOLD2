@@ -35,7 +35,7 @@ function enviarCuento(user, callback) {
 
         }
     });
- $(this).slideUp(300).delay(2000).fadeIn(400);
+    $(this).slideUp(300).delay(2000).fadeIn(400);
     $.ajax({
         url: '/idCuento',
         type: 'GET',
@@ -43,6 +43,7 @@ function enviarCuento(user, callback) {
         success: function (idCuento) { //obtenemos el ultimo id del cuento guardado
             $(this).slideUp(300).delay(2000).fadeIn(400);
             //console.log(idCuento[0].id);
+            console.log("Soy el id del cuento a guardar" + idCuento[0].id);
             for (imagen of user.cuento.imagenes) {
 
                 var imagenesCuento = {
@@ -69,7 +70,7 @@ function enviarCuento(user, callback) {
 
 
             }
-             $(this).slideUp(300).delay(2000).fadeIn(400);
+            $(this).slideUp(300).delay(2000).fadeIn(400);
             if (user.cuento.audios != undefined) {
                 for (audio of user.cuento.audios) {
                     var audiosCuento = {
@@ -97,7 +98,7 @@ function enviarCuento(user, callback) {
 
                 }
             }
-             $(this).slideUp(300).delay(2000).fadeIn(400);
+            $(this).slideUp(300).delay(2000).fadeIn(400);
             if (user.cuento.preguntas != undefined) {
                 for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
                     if (pregunta != undefined && pregunta.pregunta != "") {
@@ -128,11 +129,10 @@ function enviarCuento(user, callback) {
                             type: 'GET',
                             cache: false,
                             success: function (idPregunta) { //obtenemos el ultimo id de la pregunta guardada
-
                                 $(this).slideUp(300).delay(2000).fadeIn(400);
+                                $(this).slideUp(300).delay(2000).fadeIn(400);
+                                console.log("Soy el id de la pregunta extraidax2" + idPregunta[0].id);
                                 for (imagen of preguntaCopiada.imagens) {
-                                    console.log(imagen.src);
-                                    console.log(idPregunta[0].id);
                                     var imagenesPregunta = {
                                         id: idPregunta[0].id,
                                         src: imagen.src
@@ -1045,7 +1045,7 @@ $(document).ready(function () {
 });
 
 function deleteCuento(id) {
-    alert("Estamos  eliminando el cuento"+ id);
+    alert("Estamos  eliminando el cuento" + id);
     //AQUIIIIIIII ESTABA EL ERROR
     //var j = localStorage.getItem("var");
     var elem = {
@@ -1055,21 +1055,14 @@ function deleteCuento(id) {
     //alert("Hola eliminar cuento mii" );
 
     $.ajax({
-        url: '/idPreguntaCuento',
+        url: '/idPreguntaCuento', //traera las preguntas qye pertenezcan a esa historia
         type: 'POST',
-        // Form data
-        //datos del formulario
         data: elem,
-        //necesario para subir archivos via ajax
         cache: false,
-
         success: function (data) {
-            //alert("miau www" + data.length);
-             $(this).slideUp(300).delay(2000).fadeIn(400);
+            $(this).slideUp(300).delay(2000).fadeIn(400);
             if (data != undefined) { //si existe preguntas que borrar
                 $.each(data, function (i, emp) {
-                    $(this).slideUp(300).delay(2000).fadeIn(400);
-                   // alert("idpreg " + emp.id);
                     var elem2 = {
                         idpreg: emp.id
                     };
@@ -1078,27 +1071,27 @@ function deleteCuento(id) {
                         type: 'POST',
                         data: elem2,
                         cache: false,
+                        success: function (data) {
+                            $(this).slideUp(300).delay(2000).fadeIn(400);
+                        },
+                        //si ha ocurrido un error
+                        error: function () {
+                            console.log("error lalalla");
+                        }
+                    });
+
+                    $(this).slideUp(300).delay(2000).fadeIn(400);
+                    //elimina la pregunta
+                    console.log("soy yd cuento " + elem.idcuento);
+                    $.ajax({
+                        url: '/eliminarPreguntasCuento',
+                        type: 'POST',
+                        data: elem,
+                        cache: false,
 
                         success: function (data) {
                             $(this).slideUp(300).delay(2000).fadeIn(400);
-                            //elimina la pregunta
-                            console.log("soy yd cuento "+elem.idcuento);
-                            $.ajax({
-                                url: '/eliminarPreguntasCuento',
-                                type: 'POST',
-                                data: elem,
-                                cache: false,
 
-                                success: function (data) {
-                                    $(this).slideUp(300).delay(2000).fadeIn(400);
-
-
-                                },
-                                //si ha ocurrido un error
-                                error: function () {
-                                    console.log("error lalalla");
-                                }
-                            });
 
                         },
                         //si ha ocurrido un error
@@ -1106,6 +1099,7 @@ function deleteCuento(id) {
                             console.log("error lalalla");
                         }
                     });
+
                 });
             }
 
@@ -1118,7 +1112,7 @@ function deleteCuento(id) {
     });
 
     //eliminar Audios
-$(this).slideUp(300).delay(2000).fadeIn(400);
+    $(this).slideUp(300).delay(2000).fadeIn(400);
     $.ajax({
         url: '/eliminarAudiosCuento',
         type: 'POST',
@@ -1133,7 +1127,7 @@ $(this).slideUp(300).delay(2000).fadeIn(400);
             console.log("error");
         }
     });
-$(this).slideUp(300).delay(2000).fadeIn(400);
+    $(this).slideUp(300).delay(2000).fadeIn(400);
     //eliminar imagenes
     $.ajax({
         url: '/eliminarImagenesCuento',
@@ -1142,18 +1136,14 @@ $(this).slideUp(300).delay(2000).fadeIn(400);
         data: elem,
         cache: false,
 
-        success: function (data) {
-         
-            //alert("Se ha eliminado las imagenes");
-
-
-        },
+        success: function (data) {},
         //si ha ocurrido un error
         error: function () {
             console.log("error");
         }
     });
-   $(this).slideUp(300).delay(2000).fadeIn(400);
+
+    $(this).slideUp(300).delay(2000).fadeIn(400);
     $.ajax({
         url: '/eliminarCuento',
         type: 'POST',
@@ -1170,7 +1160,7 @@ $(this).slideUp(300).delay(2000).fadeIn(400);
             console.log("error");
         }
     });
-    // location.reload();
+    location.reload();
 }
 
 
