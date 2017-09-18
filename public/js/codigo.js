@@ -10,7 +10,6 @@ var ArrPreg = [];
 
 var idCuento = 5;
 
-
 function enviarCuento(user, callback) {
     // var datos = "";
     var cuentero = {
@@ -472,7 +471,7 @@ function enviarActualizar(user, callback) {
                                 data: imagenesPregunta,
                                 cache: false,
                                 success: function (pred) {
-                                     $(this).slideUp(300).delay(2000).fadeIn(400);
+                                    $(this).slideUp(300).delay(2000).fadeIn(400);
                                 },
                                 //si ha ocurrido un error
                                 error: function () {
@@ -1075,6 +1074,8 @@ function deleteCuento(id) {
                     };
                     $(this).slideUp(300).delay(2000).fadeIn(400);
                     $(this).slideUp(300).delay(2000).fadeIn(400);
+                    $(this).slideUp(300).delay(2000).fadeIn(400);
+                    $(this).slideUp(300).delay(2000).fadeIn(400);
                     $.ajax({
                         url: '/eliminarImgPregCuento',
                         type: 'POST',
@@ -1089,6 +1090,8 @@ function deleteCuento(id) {
                         }
                     });
 
+                    $(this).slideUp(300).delay(2000).fadeIn(400);
+                    $(this).slideUp(300).delay(2000).fadeIn(400);
                     $(this).slideUp(300).delay(2000).fadeIn(400);
                     $(this).slideUp(300).delay(2000).fadeIn(400);
                     //elimina la pregunta
@@ -1140,6 +1143,8 @@ function deleteCuento(id) {
     });
     $(this).slideUp(300).delay(2000).fadeIn(400);
     $(this).slideUp(300).delay(2000).fadeIn(400);
+    $(this).slideUp(300).delay(2000).fadeIn(400);
+    $(this).slideUp(300).delay(2000).fadeIn(400);
     //eliminar imagenes
     $.ajax({
         url: '/eliminarImagenesCuento',
@@ -1158,6 +1163,8 @@ function deleteCuento(id) {
         }
     });
 
+    $(this).slideUp(300).delay(2000).fadeIn(400);
+    $(this).slideUp(300).delay(2000).fadeIn(400);
     $(this).slideUp(300).delay(2000).fadeIn(400);
     $(this).slideUp(300).delay(2000).fadeIn(400);
 
