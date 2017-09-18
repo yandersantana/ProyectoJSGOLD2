@@ -148,7 +148,24 @@ app.get('/usuarios', (req, res, next) => {
 
 });
 
+app.get('/userdatos', (req, res) => {
+    var client = new pg.Client(conString);
+    client.connect(function (err) {
+        client.query('SELECT id, username FROM users ;', function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+            client.end();
+            return res.json(result.rows);
 
+
+        });
+
+
+    });
+
+
+});
 
 app.post('/imagenes', (req, res) => {
     var client = new pg.Client(conString);

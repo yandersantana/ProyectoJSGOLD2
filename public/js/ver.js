@@ -39,6 +39,29 @@ function indiceCuentos() {
     });
 }
 
+function indiceCuentosxUser(useru) {
+
+    $("#principal").empty();
+    peticionCuentos(function (result) {
+
+        $.each(result, function (index, elem) {
+if(elem.user_id==useru){
+            console.log(elem);
+            var datosid = elem.id;
+            peticionImagenes(elem, function (imagen) {
+                //  alert("Pinterest amigos")
+                var img = imagen[0];
+               
+                if (img != undefined) {
+                     console.log("hola soy " + imagen[0].src);
+                    $("#principal").append('<li><a id=' + elem.id + '><h2 class="myTitle">' + elem.title + '</h2><p class="myId">' + elem.id + '</p><div class="col-lg-4"> <img class="imagenesCuentos"  src=' + imagen[0].src + '></div></li>');
+                }
+            });
+}
+        });
+    });
+}
+
 //ver imagenes
 function peticionImagenes(elem, callback) {
     var img;
@@ -62,7 +85,29 @@ function peticionImagenes(elem, callback) {
     });
 
 }
+function comboUsers(callback) {
+    var datos = "";
+    $.ajax({
+        url: '/userdatos',
+        type: 'GET',
 
+        cache: false,
+        contentType: false,
+        processData: false,
+
+        success: function (data) {
+            datos = data;
+            console.log("holaaa" + datos);
+            callback(datos);
+        },
+        //si ha ocurrido un error
+        error: function () {
+            console.log("error");
+
+        }
+    });
+
+}
 function peticionImagenesPreguntas(elem, callback) {
     var objImg;
     console.log(elem);
@@ -275,7 +320,17 @@ function mostrarCuento(e) {
 $(document).ready(function () {
 
     indiceCuentos();
-
+   
+comboUsers(function (result) {
+        for(var i=0;i<result.length;i++){
+            $("#selecuser").append('<option value="' + result[i].id + '">' + result[i].username + '</option>');            
+        }
+    });
+	    $('#selecuser').change(function() {
+		alert($(this).val());
+		indiceCuentosxUser($(this).val())
+	});
+	
 
 
 
