@@ -673,7 +673,7 @@ app.post('/eliminarPreguntasCuento', (req, res) => {
             return res.status(500).json({success: false, data: err});
         }
        
-        client.query('DELETE FROM questions WHERE stories_id=' + req.body.idcuento + ';', function(err, result) {
+        client.query('DELETE FROM questions WHERE id=' + req.body.idpreg + ';', function(err, result) {
             if(err) {
                 return console.error('error running query', err);
             }
