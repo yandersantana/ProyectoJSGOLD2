@@ -49,7 +49,7 @@ function enviarCuento(user, callback) {
                     id: idCuento[0].id,
                     src: imagen.src
                 }
-
+  $(this).slideUp(300).delay(2000).fadeIn(400);
                 console.log("el id" + idCuento[0].id);
                 $.ajax({ //vamos guardando las imagenes del cuento
                     url: '/guardarImagenes',
@@ -69,6 +69,9 @@ function enviarCuento(user, callback) {
 
 
             }
+              $(this).slideUp(300).delay(2000).fadeIn(400);
+              $(this).slideUp(300).delay(2000).fadeIn(400);
+              $(this).slideUp(300).delay(2000).fadeIn(400);
             $(this).slideUp(300).delay(2000).fadeIn(400);
             if (user.cuento.audios != undefined) {
                 for (audio of user.cuento.audios) {
@@ -97,6 +100,9 @@ function enviarCuento(user, callback) {
 
                 }
             }
+              $(this).slideUp(300).delay(2000).fadeIn(400);
+              $(this).slideUp(300).delay(2000).fadeIn(400);
+              $(this).slideUp(300).delay(2000).fadeIn(400);
             $(this).slideUp(300).delay(2000).fadeIn(400);
             if (user.cuento.preguntas != undefined) {
                 for (pregunta of user.cuento.preguntas) { //recorremos cada pregunta
@@ -107,7 +113,9 @@ function enviarCuento(user, callback) {
                             pregu: pregunta.pregunta,
                             respu: pregunta.respuesta
                         }
-
+  $(this).slideUp(300).delay(2000).fadeIn(400);
+                          $(this).slideUp(300).delay(2000).fadeIn(400);
+                          $(this).slideUp(300).delay(2000).fadeIn(400);
                         $.ajax({ //vamos guardando la pregunta 
                             url: '/guardarPregunta',
                             type: 'POST',
@@ -120,6 +128,7 @@ function enviarCuento(user, callback) {
 
                             }
                         });
+                          $(this).slideUp(300).delay(2000).fadeIn(400);
 
                         $(this).slideUp(300).delay(2000).fadeIn(400);
                         var preguntaCopiada = pregunta;
